@@ -41,7 +41,113 @@ function mirrorFilm() {
     b.appendChild(cell.cloneNode(true));
   });
 }
-function dressToday() {
+function dayName() {
+  return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][new Date().getDay()];
+}
+function evDay(ev) {
+  var d = String(ev.day || "").toLowerCase();
+  if (d.indexOf("mon") === 0) return "Monday";
+  if (d.indexOf("tue") === 0) return "Tuesday";
+  if (d.indexOf("wed") === 0) return "Wednesday";
+  if (d.indexOf("thu") === 0) return "Thursday";
+  if (d.indexOf("fri") === 0) return "Friday";
+  if (d.indexOf("sat") === 0) return "Saturday";
+  if (d.indexOf("sun") === 0) return "Sunday";
+  return "";
+}
+function parseMins(t) {
+  var m = String(t || "").trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
+  if (!m) return null;
+  var h = parseInt(m[1], 10);
+  var min = parseInt(m[2], 10);
+  var ap = (m[3] || "").toUpperCase();
+  if (ap === "PM" && h < 12) h += 12;
+  if (ap === "AM" && h === 12) h = 0;
+  return h * 60 + min;
+}
+function loadLikes() {
+  try { return JSON.parse(localStorage.getItem("wtv-likes-v1") || "{}"); }
+  catch (e) { return {}; }
+}
+function saveLikes(map) { localStorage.setItem("wtv-likes-v1", JSON.stringify(map)); }
+function armAlarm(ev) {
+  if (!("Notification" in window)) {
+    alert("Saved. This browser cannot ring an alarm.");
+    return;
+  }
+  function ring() {
+    try {
+      new Notification("Wellness TV", { body: ev.time + " · " + ev.name + " · " + (ev.venue || ev.city) });
+    } catch (e) {}
+  }
+  function schedule() {
+    var start = parseMins(ev.time);
+    if (start == null) { ring(); return; }
+    var now = new Date();
+    var cur = now.getHours() * 60 + now.getMinutes();
+    var waitMin = start - cur - 15;
+    if (waitMin < 1) { ring(); return; }
+    setTimeout(ring, waitMin * 60 * 1000);
+  }
+  if (Notification.permission === "granted") schedule();
+  else if (Notification.permission !== "denied") {
+    Notification.requestPermission().then(function (p) {
+      if (p === "granted") schedule();
+    });
+  }
+}
+function paintToday() {
+  var box = document.getElementById("credits");
+  if (!box || !window.SEED) return;
+  var likes = loadLikes();
+  var today = dayName();
+  var extra = [];
+  try { extra = JSON.parse(localStorage.getItem("wtv-published-v1") || "[]"); } catch (e) {}
+  var list = extra.concat(window.SEED.events || []).filter(function (ev) {
+    return evDay(ev) === today;
+  });
+  box.innerHTML = "<h4>TODAY</h4>";
+  if (!list.length) {
+    var empty = document.createElement("p");
+    empty.className = "cr-empty";
+    empty.textContent = "Dark tonight.";
+    box.appendChild(empty);
+    return;
+  }
+  list.forEach(function (ev) {
+    var row = document.createElement("div");
+    row.className = "cr";
+    row.innerHTML = "<b></b><div class=\"cr-body\"><strong></strong><em></em><i></i></div><button class=\"like\" type=\"button\"></button>";
+    row.querySelector("b").textContent = ev.time || "";
+    row.querySelector("strong").textContent = ev.name;
+    row.querySelector("em").textContent = ev.venue || ev.city || "";
+    row.querySelector("i").textContent = ev.price || "Free";
+    var btn = row.querySelector(".like");
+    var on = !!likes[ev.id];
+    btn.textContent = on ? "\u2665" : "\u2661";
+    if (on) btn.classList.add("on");
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      likes[ev.id] = !likes[ev.id];
+      saveLikes(likes);
+      btn.classList.toggle("on", likes[ev.id]);
+      btn.textContent = likes[ev.id] ? "\u2665" : "\u2661";
+      if (likes[ev.id]) armAlarm(ev);
+    });
+    row.addEventListener("click", function () {
+      var sheet = document.getElementById("sheet");
+      if (!sheet) return;
+      document.getElementById("sName").textContent = ev.name;
+      document.getElementById("sWhen").textContent = (ev.rule || ev.day) + " · " + ev.time;
+      document.getElementById("sWhere").textContent = (ev.venue || "") + " · " + (ev.address || ev.city || "");
+      document.getElementById("sPrice").textContent = (ev.price || "Free") + " · " + (ev.capacity || "");
+      document.getElementById("sLink").href = ev.instagram || "#";
+      sheet.classList.add("open");
+    });
+    box.appendChild(row);
+  });
+}
+function dressChrome() {
   var scene = document.getElementById("scene");
   if (scene) scene.remove();
   var days = ["SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"];
@@ -53,31 +159,12 @@ function dressToday() {
   var hero = document.getElementById("heroTitle");
   if (hero) hero.textContent = day.slice(0, 3) + " · IN THE BAY";
   mirrorFilm();
-  var box = document.getElementById("credits");
-  if (!box) return;
-  var head = box.querySelector("h4");
-  if (head) head.textContent = "TODAY";
-  box.querySelectorAll(".cr").forEach(function (row) {
-    var span = row.querySelector("span");
-    var time = row.querySelector("b");
-    if (time) {
-      var t = time.textContent.replace(/AM|PM/gi, "").trim();
-      time.textContent = t.length === 4 ? "0" + t : t;
-    }
-    if (!span) return;
-    var text = span.textContent || "";
-    row.classList.remove("is-now", "is-next", "is-past", "live", "done", "up");
-    var old = row.querySelector(".flag");
-    if (old) old.remove();
-    if (text.indexOf("NOW") === 0) row.classList.add("live");
-    else if (text.indexOf("PAST") === 0) row.classList.add("done");
-    span.textContent = text.replace(/^(NOW|NEXT|PAST)\s*·\s*/, "");
-  });
+  paintToday();
 }
 function bootSocial() {
   paintId();
   paintFloor();
-  dressToday();
+  dressChrome();
   var sheet = document.getElementById("idSheet");
   var btn = document.getElementById("idBtn");
   if (btn && sheet) btn.onclick = function () { sheet.classList.add("open"); };
