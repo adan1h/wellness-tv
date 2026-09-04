@@ -35,21 +35,31 @@ function paintFloor() {
 function dressToday() {
   var scene = document.getElementById("scene");
   if (scene) scene.remove();
-  var tag = document.getElementById("epTag");
-  if (tag) tag.textContent = "LIVE GUIDE";
+  var days = ["SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"];
+  var day = days[new Date().getDay()];
+  var bill = document.getElementById("billTitle");
+  if (bill) bill.textContent = day + " IN THE BAY";
+  var line = document.getElementById("epLine");
+  if (line) line.textContent = "WELLNESS TV · EPISODE";
+  var hero = document.getElementById("heroTitle");
+  if (hero) hero.textContent = day.slice(0, 3) + " · IN THE BAY";
   var box = document.getElementById("credits");
   if (!box) return;
   var head = box.querySelector("h4");
-  if (head) head.textContent = "TODAY";
+  if (head) head.textContent = "ON AIR";
   box.querySelectorAll(".cr").forEach(function (row) {
     var span = row.querySelector("span");
+    var time = row.querySelector("b");
+    if (time) {
+      var t = time.textContent.replace(/AM|PM/gi, "").trim();
+      time.textContent = t.length === 4 ? "0" + t : t;
+    }
     if (!span) return;
     var text = span.textContent || "";
-    row.classList.remove("is-now", "is-next", "is-past");
+    row.classList.remove("is-now", "is-next", "is-past", "live", "done", "up");
     var old = row.querySelector(".flag");
     if (old) old.remove();
     if (text.indexOf("NOW") === 0) row.classList.add("live");
-    else if (text.indexOf("NEXT") === 0) row.classList.add("up");
     else if (text.indexOf("PAST") === 0) row.classList.add("done");
     span.textContent = text.replace(/^(NOW|NEXT|PAST)\s*·\s*/, "");
   });
