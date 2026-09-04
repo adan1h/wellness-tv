@@ -6,24 +6,51 @@
   <title>Wellness TV · Publisher</title>
   <link rel="stylesheet" href="./styles.css" />
   <style>
-    .box { margin: 12px 16px; background: var(--card); border-radius: 14px; padding: 14px; }
-    label { display: block; font-size: 11px; color: var(--gold); letter-spacing: .08em; margin: 10px 0 4px; font-weight: 700; }
-    input, select { width: 100%; background: #0d1b2a; color: var(--cream); border: 1px solid var(--line); border-radius: 10px; padding: 10px; font: inherit; }
-    button.publish { margin-top: 14px; width: 100%; background: var(--gold); color: #0d1b2a; border: 0; border-radius: 999px; padding: 12px; font-weight: 800; cursor: pointer; }
+    .box { margin: 12px 16px; background: var(--card, #111); border: 1px solid rgba(255,255,255,.08); padding: 14px; }
+    label { display: block; font-size: 11px; color: #d4b36a; letter-spacing: .08em; margin: 10px 0 4px; font-weight: 700; }
+    input, select { width: 100%; background: #0d1b2a; color: #f3efe4; border: 1px solid rgba(255,255,255,.12); padding: 10px; font: inherit; }
+    button.publish { margin-top: 14px; width: 100%; background: #d4b36a; color: #07080a; border: 0; padding: 12px; font-weight: 800; cursor: pointer; }
     .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .item { font-size: 13px; padding: 8px 0; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 8px; }
+    .item { font-size: 13px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.08); display: flex; justify-content: space-between; gap: 8px; }
     .del { background: none; border: 0; color: #e85d4c; cursor: pointer; }
-    a.back { color: var(--gold); margin: 16px; display: inline-block; }
-    .note { color: var(--muted); font-size: 13px; line-height: 1.45; margin: 0 16px 8px; }
+    a.back { color: #d4b36a; margin: 16px; display: inline-block; }
+    .note { color: #9aa0a6; font-size: 13px; line-height: 1.45; margin: 0 16px 8px; }
   </style>
 </head>
 <body>
   <a class="back" href="./index.html">← Channel</a>
-  <header class="top">
+  <header class="top" style="padding:16px;">
     <div class="brand">Publisher</div>
-    <div class="sub">Wellness TV only</div>
   </header>
-  <p class="note">Adds a card on this device only (local). Organizers do not get this screen.</p>
+  <p class="note">This panel is Wellness TV only. Hours can stay loose for now. What the platform needs is the live switch.</p>
+
+  <form class="box" id="air">
+    <label>CHANNEL STATUS</label>
+    <select name="status">
+      <option value="idle">Idle / replay still</option>
+      <option value="next">NEXT LIVE</option>
+      <option value="live">ON AIR</option>
+      <option value="replay">REPLAY</option>
+    </select>
+    <label>TITLE ON FRAME</label>
+    <input name="title" placeholder="Friday in the Bay" />
+    <label>NOTE UNDER TITLE</label>
+    <input name="note" placeholder="Window on YouTube" />
+    <label>EVENT ID (optional)</label>
+    <input name="eventId" placeholder="WTV-039" />
+    <label>YOUTUBE URL</label>
+    <input name="youtube" placeholder="https://youtube.com/..." />
+    <label>KICK URL</label>
+    <input name="kick" placeholder="https://kick.com/..." />
+    <label>X URL</label>
+    <input name="x" placeholder="https://x.com/..." />
+    <label>TIKTOK URL</label>
+    <input name="tiktok" placeholder="https://www.tiktok.com/..." />
+    <label>REPLAY / VOD URL</label>
+    <input name="replay" placeholder="https://youtube.com/watch?v=..." />
+    <button class="publish" type="submit">Put on the channel</button>
+  </form>
+
   <form class="box" id="form">
     <label>NAME</label><input name="name" required placeholder="Club or session name" />
     <div class="row">
@@ -32,7 +59,7 @@
     </div>
     <label>RECURRING RULE</label><input name="rule" placeholder="Every Wednesday" />
     <label>VENUE</label><input name="venue" required />
-    <label>ADDRESS</label><input name="address" required />
+    <label>ADDRESS</label><input name="address" placeholder="Can stay loose for now" />
     <div class="row">
       <div><label>CITY</label><select name="city"><option>St. Petersburg</option><option>Tampa</option></select></div>
       <div><label>PRICE</label><input name="price" value="Free" /></div>
@@ -43,7 +70,7 @@
       <div><label>LAT</label><input name="lat" value="27.77" /></div>
       <div><label>LNG</label><input name="lng" value="-82.64" /></div>
     </div>
-    <button class="publish" type="submit">Publish on this device</button>
+    <button class="publish" type="submit">Add session on this device</button>
   </form>
   <div class="box">
     <h2 style="font-size:15px;margin-bottom:8px;">On this device</h2>
