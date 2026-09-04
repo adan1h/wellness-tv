@@ -1,0 +1,27 @@
+@media (min-width: 960px) {
+  .film {
+    height: min(56vh, 520px);
+    overflow: hidden;
+    align-self: start;
+  }
+  .film-track {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    animation: filmroll 32s linear infinite;
+  }
+  .film-end .film-track {
+    animation-duration: 38s;
+    animation-direction: reverse;
+  }
+  .film .cell {
+    height: 126px;
+  }
+}
+@keyframes filmroll {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .film-track { animation: none !important; }
+}
