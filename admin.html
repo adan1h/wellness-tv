@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wellness TV · Publisher</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <style>
+    .box { margin: 12px 16px; background: var(--card); border-radius: 14px; padding: 14px; }
+    label { display: block; font-size: 11px; color: var(--gold); letter-spacing: .08em; margin: 10px 0 4px; font-weight: 700; }
+    input, select { width: 100%; background: #0d1b2a; color: var(--cream); border: 1px solid var(--line); border-radius: 10px; padding: 10px; font: inherit; }
+    button.publish { margin-top: 14px; width: 100%; background: var(--gold); color: #0d1b2a; border: 0; border-radius: 999px; padding: 12px; font-weight: 800; cursor: pointer; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .item { font-size: 13px; padding: 8px 0; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 8px; }
+    .del { background: none; border: 0; color: #e85d4c; cursor: pointer; }
+    a.back { color: var(--gold); margin: 16px; display: inline-block; }
+    .note { color: var(--muted); font-size: 13px; line-height: 1.45; margin: 0 16px 8px; }
+  </style>
+</head>
+<body>
+  <a class="back" href="./index.html">← Channel</a>
+  <header class="top">
+    <div class="brand">Publisher</div>
+    <div class="sub">Wellness TV only</div>
+  </header>
+  <p class="note">Adds a card on this device only (local). Organizers do not get this screen.</p>
+  <form class="box" id="form">
+    <label>NAME</label><input name="name" required placeholder="Club or session name" />
+    <div class="row">
+      <div><label>DAY</label><input name="day" required placeholder="Wednesday" /></div>
+      <div><label>TIME</label><input name="time" required placeholder="6:30 PM" /></div>
+    </div>
+    <label>RECURRING RULE</label><input name="rule" placeholder="Every Wednesday" />
+    <label>VENUE</label><input name="venue" required />
+    <label>ADDRESS</label><input name="address" required />
+    <div class="row">
+      <div><label>CITY</label><select name="city"><option>St. Petersburg</option><option>Tampa</option></select></div>
+      <div><label>PRICE</label><input name="price" value="Free" /></div>
+    </div>
+    <label>CAPACITY / NOTE</label><input name="capacity" placeholder="All paces" />
+    <label>INSTAGRAM OR SITE</label><input name="instagram" placeholder="https://" />
+    <div class="row">
+      <div><label>LAT</label><input name="lat" value="27.77" /></div>
+      <div><label>LNG</label><input name="lng" value="-82.64" /></div>
+    </div>
+    <button class="publish" type="submit">Publish on this device</button>
+  </form>
+  <div class="box">
+    <h2 style="font-size:15px;margin-bottom:8px;">On this device</h2>
+    <div id="list"></div>
+  </div>
+  <script src="./admin.js"></script>
+</body>
+</html>
