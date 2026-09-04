@@ -13,7 +13,10 @@
 <body>
   <header class="mast">
     <div class="brand">Wellness TV</div>
-    <div class="ep-tag" id="epTag">Episode</div>
+    <div class="mast-right">
+      <div class="ep-tag" id="epTag">Episode</div>
+      <button class="id-btn" id="idBtn" type="button">Sign in</button>
+    </div>
   </header>
   <p class="scene" id="scene"></p>
 
@@ -52,7 +55,13 @@
     </aside>
   </main>
 
-  <p class="legal">The board follows Tampa Bay time. Live windows open on YouTube, Kick, TikTok or X. <a href="./admin.html">Publisher</a></p>
+  <section class="floor" id="floorSection">
+    <h3>FROM THE FLOOR</h3>
+    <p class="floor-note">Posts on Instagram, X or TikTok that tag Wellness TV. We do not host a chat. We put the mention on the channel.</p>
+    <div class="floor-row" id="floor"></div>
+  </section>
+
+  <p class="legal">Thin identity is for first-party data. No public profile. No chat. <a href="./admin.html">Publisher</a></p>
 
   <div class="sheet" id="sheet">
     <div class="sheet-card">
@@ -64,10 +73,25 @@
       <a id="sLink" href="#" target="_blank" rel="noopener">Open crew page</a>
     </div>
   </div>
+
+  <div class="sheet" id="idSheet">
+    <div class="sheet-card">
+      <button class="close" id="closeId" type="button">x</button>
+      <h3>Sign in</h3>
+      <p>Google or Apple. We keep email and city so the board can learn who actually shows up. No public profile. No chat. No followers.</p>
+      <button class="id-go" id="idGoogle" type="button">Continue with Google</button>
+      <button class="id-go" id="idApple" type="button">Continue with Apple</button>
+      <button class="id-out hidden" id="idOut" type="button">Sign out</button>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="./data.js"></script>
   <script src="./sim.js"></script>
   <script src="./broadcast.js"></script>
+  <script src="./tags.js"></script>
+  <script src="./identity.js"></script>
   <script src="./app.js"></script>
+  <script src="./social.js"></script>
 </body>
 </html>
