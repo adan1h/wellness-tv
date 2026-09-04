@@ -65,6 +65,8 @@ function mountYouTube(url) {
   ifr.allowFullscreen = true;
   ifr.referrerPolicy = "strict-origin-when-cross-origin";
   frame.appendChild(ifr);
+  frame.classList.add("on-air");
+  document.body.classList.add("on-air");
   var play = document.getElementById("playBtn");
   if (play) play.style.display = "none";
   var sub = document.getElementById("heroSub");
