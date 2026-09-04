@@ -6,6 +6,12 @@ function loadLikes() {
 function saveLikes(map) { localStorage.setItem(LIKES_KEY, JSON.stringify(map)); }
 function heart(on) { return on ? "\u2665" : "\u2661"; }
 function bindImg(img) { img.addEventListener("error", function () { img.style.opacity = "0.15"; }); }
+function emptyBox(text) {
+  var p = document.createElement("p");
+  p.className = "empty";
+  p.textContent = text;
+  return p;
+}
 function main() {
   var data = JSON.parse(JSON.stringify(window.SEED));
   var extra = [];
@@ -19,6 +25,9 @@ function main() {
   document.getElementById("heroSub").textContent = data.replay.subtitle;
   var wall = document.getElementById("wall");
   wall.innerHTML = "";
+  if (!data.wall.length) {
+    wall.appendChild(emptyBox("Channel wall fills after the first shoot."));
+  }
   data.wall.forEach(function (w) {
     var fig = document.createElement("figure");
     var img = document.createElement("img");
@@ -40,6 +49,9 @@ function main() {
   }
   document.getElementById("closeSheet").onclick = function () { sheet.classList.remove("open"); };
   sheet.onclick = function (e) { if (e.target === sheet) sheet.classList.remove("open"); };
+  if (!data.events.length) {
+    feed.appendChild(emptyBox("The board is locked until sessions are confirmed."));
+  }
   data.events.forEach(function (ev) {
     var el = document.createElement("article");
     el.className = "card";
@@ -66,6 +78,9 @@ function main() {
   });
   var gallery = document.getElementById("gallery");
   gallery.innerHTML = "";
+  if (!data.gallery.length) {
+    gallery.appendChild(emptyBox("Gallery opens after the first shoot."));
+  }
   data.gallery.forEach(function (src) {
     var img = document.createElement("img");
     img.src = src; img.alt = ""; bindImg(img); gallery.appendChild(img);

@@ -21,6 +21,15 @@ img { display: block; width: 100%; object-fit: cover; }
 .top { padding: 18px 18px 8px; }
 .brand { font-size: 22px; font-weight: 700; letter-spacing: -0.03em; }
 .sub { color: var(--gold); font-size: 12px; font-weight: 600; margin-top: 2px; }
+.empty {
+  margin: 0;
+  padding: 16px;
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
 .hero {
   margin: 8px 16px 18px;
   border-radius: 18px;
@@ -61,6 +70,7 @@ img { display: block; width: 100%; object-fit: cover; }
 .wall figcaption {
   font-size: 9px; color: var(--muted); padding: 6px 4px 8px; text-align: center; line-height: 1.2;
 }
+.wall .empty { grid-column: 1 / -1; }
 .card {
   display: grid;
   grid-template-columns: 88px 1fr auto;
@@ -87,6 +97,7 @@ img { display: block; width: 100%; object-fit: cover; }
 .like.on { background: rgba(201,168,76,.15); }
 .gallery { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
 .gallery img { width: 140px; height: 140px; border-radius: 12px; flex: 0 0 auto; }
+.gallery .empty { flex: 1 1 auto; }
 #map {
   height: 220px; border-radius: 16px; margin: 0 16px 16px;
   overflow: hidden; border: 1px solid var(--line);
