@@ -17,6 +17,27 @@ function dayKey(ev) {
 function todayName() {
   return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][new Date().getDay()];
 }
+function parseMinutes(t) {
+  var m = String(t || "").trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
+  if (!m) return null;
+  var h = parseInt(m[1], 10);
+  var min = parseInt(m[2], 10);
+  var ap = (m[3] || "").toUpperCase();
+  if (ap === "PM" && h < 12) h += 12;
+  if (ap === "AM" && h === 12) h = 0;
+  return h * 60 + min;
+}
+function sessionMark(ev, isToday) {
+  if (!isToday) return "";
+  var start = parseMinutes(ev.time);
+  if (start == null) return "";
+  var now = new Date();
+  var cur = now.getHours() * 60 + now.getMinutes();
+  var end = start + 90;
+  if (cur >= start && cur < end) return "NOW";
+  if (cur < start) return "NEXT";
+  return "PAST";
+}
 function timeSort(a, b) { return String(a.time || "").localeCompare(String(b.time || "")); }
 function loadLikes() {
   try { return JSON.parse(localStorage.getItem(LIKES_KEY) || "{}"); }
@@ -39,17 +60,20 @@ function selectCard(id) {
   var m = markers[id];
   if (mapRef && m) { mapRef.setView(m.getLatLng(), 13); m.openPopup(); }
 }
-function makeCard(ev, likes, openSheet) {
+function makeCard(ev, likes, openSheet, isToday) {
   var el = document.createElement("article");
   el.className = "card";
   el.setAttribute("data-id", ev.id);
+  var mark = sessionMark(ev, isToday);
   var on = !!likes[ev.id];
   el.innerHTML = "<img alt=\"\" /><div><h4></h4><div class=\"meta\"></div><div class=\"price\"></div></div><button class=\"like\" type=\"button\"></button>";
   var img = el.querySelector("img");
   img.src = ev.image; bindImg(img);
   el.querySelector("h4").textContent = ev.name;
-  el.querySelector(".meta").textContent = ev.time + " \u00b7 " + ev.city;
-  el.querySelector(".price").textContent = ev.price + " \u00b7 " + ev.capacity;
+  el.querySelector(".meta").textContent = (mark ? mark + " · " : "") + ev.time + " · " + ev.city;
+  el.querySelector(".price").textContent = ev.price + " · " + ev.capacity;
+  if (mark === "NOW") el.classList.add("now");
+  if (mark === "PAST") el.classList.add("past");
   var btn = el.querySelector(".like");
   if (on) btn.classList.add("on");
   btn.textContent = heart(on);
@@ -67,8 +91,9 @@ function renderGuide(day) {
   state.day = day;
   var feed = document.getElementById("feed");
   var title = document.getElementById("guideTitle");
+  var isToday = day === todayName();
   feed.innerHTML = "";
-  title.textContent = (day === todayName() ? "TODAY" : day.toUpperCase());
+  title.textContent = isToday ? "TODAY" : day.toUpperCase();
   document.querySelectorAll(".chip").forEach(function (c) {
     c.classList.toggle("on", c.getAttribute("data-day") === day);
   });
@@ -80,7 +105,7 @@ function renderGuide(day) {
     feed.appendChild(p);
     return;
   }
-  list.forEach(function (ev) { feed.appendChild(makeCard(ev, state.likes, state.openSheet)); });
+  list.forEach(function (ev) { feed.appendChild(makeCard(ev, state.likes, state.openSheet, isToday)); });
 }
 function fillStrip(data) {
   var strip = document.getElementById("strip");
@@ -97,7 +122,7 @@ function fillStrip(data) {
       cell.appendChild(img);
     } else {
       var s = document.createElement("span");
-      s.textContent = (item.label || "CLIP") + " \u00b7 after first shoot";
+      s.textContent = (item.label || "CLIP") + " · after first shoot";
       cell.appendChild(s);
     }
     strip.appendChild(cell);
@@ -116,12 +141,31 @@ function main() {
   try { override = JSON.parse(localStorage.getItem("wtv-broadcast-v1") || "null"); } catch (e) { override = null; }
   if (override && override.status) bc = override;
 
+  var liveN = 0, nextN = 0, pastN = 0;
+  todayList.forEach(function (ev) {
+    var mk = sessionMark(ev, true);
+    if (mk === "NOW") liveN += 1;
+    else if (mk === "NEXT") nextN += 1;
+    else if (mk === "PAST") pastN += 1;
+  });
+  var scene = document.getElementById("scene");
+  if (scene) {
+    if (liveN) scene.textContent = liveN + " ON THE FLOOR NOW · " + nextN + " STILL AHEAD";
+    else if (nextN) scene.textContent = nextN + " STILL AHEAD TODAY · " + pastN + " ALREADY RAN";
+    else if (pastN) scene.textContent = "BOARD CLOSED FOR TODAY · " + pastN + " SESSIONS RAN";
+    else scene.textContent = "DARK TONIGHT";
+  }
+
   document.getElementById("epTag").textContent = "EPISODE · " + today.toUpperCase();
   var badge = document.getElementById("heroBadge");
   var title = document.getElementById("heroTitle");
   var sub = document.getElementById("heroSub");
   title.textContent = today.toUpperCase() + " IN THE BAY";
-  if (bc.status === "live") {
+  if (liveN && bc.status !== "live") {
+    badge.textContent = "ON THE FLOOR";
+    badge.className = "badge live";
+    sub.textContent = "A session is in the city right now. We send you to the crew page.";
+  } else if (bc.status === "live") {
     badge.textContent = "ON AIR";
     badge.className = "badge live";
     title.textContent = bc.title || title.textContent;
@@ -135,7 +179,7 @@ function main() {
     badge.textContent = bc.status === "replay" ? "REPLAY · SIM" : "REPLAY";
     badge.className = "badge";
     title.textContent = bc.title || title.textContent;
-    sub.textContent = bc.note || "Simulation pack until the first real shoot.";
+    sub.textContent = bc.note || "The board follows Tampa Bay time.";
   }
   var heroImg = document.getElementById("heroImg");
   heroImg.src = data.replay.image;
@@ -180,9 +224,10 @@ function main() {
   todayList.forEach(function (ev) {
     var row = document.createElement("div");
     row.className = "cr";
+    var mk = sessionMark(ev, true);
     row.innerHTML = "<b></b><span></span>";
     row.querySelector("b").textContent = ev.time.replace(" ", "");
-    row.querySelector("span").textContent = ev.name;
+    row.querySelector("span").textContent = (mk ? mk + " · " : "") + ev.name;
     row.addEventListener("click", function () { selectCard(ev.id); });
     credits.appendChild(row);
   });
