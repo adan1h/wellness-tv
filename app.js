@@ -82,6 +82,27 @@ function renderGuide(day) {
   }
   list.forEach(function (ev) { feed.appendChild(makeCard(ev, state.likes, state.openSheet)); });
 }
+function fillStrip(data) {
+  var strip = document.getElementById("strip");
+  strip.innerHTML = "";
+  var clips = data.wall && data.wall.length ? data.wall : [
+    { label: "16:9" }, { label: "9:16" }, { label: "X" }
+  ];
+  clips.forEach(function (item) {
+    var cell = document.createElement("div");
+    cell.className = "cell";
+    if (item.image) {
+      var img = document.createElement("img");
+      img.src = item.image; img.alt = item.label || ""; bindImg(img);
+      cell.appendChild(img);
+    } else {
+      var s = document.createElement("span");
+      s.textContent = (item.label || "CLIP") + " \u00b7 after first shoot";
+      cell.appendChild(s);
+    }
+    strip.appendChild(cell);
+  });
+}
 function main() {
   var data = JSON.parse(JSON.stringify(window.SEED));
   var extra = [];
@@ -101,26 +122,20 @@ function main() {
   var sub = document.getElementById("heroSub");
   title.textContent = today.toUpperCase() + " IN THE BAY";
   if (bc.status === "live") {
-    badge.textContent = "ON AIR · " + (bc.windows.filter(function (w) { return w.url; }).map(function (w) { return w.platform; }).join(" / ") || "LIVE");
+    badge.textContent = "ON AIR";
     badge.className = "badge live";
     title.textContent = bc.title || title.textContent;
-    sub.textContent = "Same window on YouTube, Kick, X or TikTok. We switch the frame.";
+    sub.textContent = "Same window on YouTube, Kick, X or TikTok.";
   } else if (bc.status === "next") {
     badge.textContent = "NEXT LIVE";
     badge.className = "badge next";
     title.textContent = bc.title || title.textContent;
     sub.textContent = bc.note || "Links drop when the encoder goes live.";
-  } else if (bc.status === "replay") {
-    badge.textContent = "REPLAY";
+  } else {
+    badge.textContent = bc.status === "replay" ? "REPLAY · SIM" : "REPLAY";
     badge.className = "badge";
     title.textContent = bc.title || title.textContent;
-    sub.textContent = "VOD on YouTube · shorts cut to TikTok and X.";
-  } else {
-    badge.textContent = "REPLAY";
-    badge.className = "badge";
-    sub.textContent = todayList.length
-      ? todayList.length + " sessions on the board · first shoot still pending"
-      : "No locked session today";
+    sub.textContent = bc.note || "Simulation pack until the first real shoot.";
   }
   var heroImg = document.getElementById("heroImg");
   heroImg.src = data.replay.image;
@@ -129,23 +144,8 @@ function main() {
     var url = firstLiveUrl(bc);
     if (url) window.open(url, "_blank", "noopener");
     else if (bc.eventId) selectCard(bc.eventId);
-    else if (todayList[0]) selectCard(todayList[0].id);
   };
-
-  var strip = document.getElementById("strip");
-  strip.innerHTML = "";
-  [
-    { label: "16:9", note: "YouTube / Kick replay" },
-    { label: "9:16", note: "TikTok live cut" },
-    { label: "X", note: "clip + live" }
-  ].forEach(function (item) {
-    var cell = document.createElement("div");
-    cell.className = "cell";
-    var s = document.createElement("span");
-    s.textContent = item.label + " · " + item.note;
-    cell.appendChild(s);
-    strip.appendChild(cell);
-  });
+  fillStrip(data);
 
   var watch = document.getElementById("watch");
   watch.innerHTML = "";
@@ -167,9 +167,7 @@ function main() {
       img.src = src; img.alt = "Session still"; bindImg(img);
       stills.appendChild(img);
     });
-  } else {
-    stillsSec.classList.add("hidden");
-  }
+  } else stillsSec.classList.add("hidden");
 
   var credits = document.getElementById("credits");
   credits.innerHTML = "<h4>TODAY</h4>";
@@ -184,8 +182,7 @@ function main() {
     row.className = "cr";
     row.innerHTML = "<b></b><span></span>";
     row.querySelector("b").textContent = ev.time.replace(" ", "");
-    var liveMark = (bc.eventId === ev.id && (bc.status === "live" || bc.status === "next")) ? " · window" : "";
-    row.querySelector("span").textContent = ev.name + liveMark;
+    row.querySelector("span").textContent = ev.name;
     row.addEventListener("click", function () { selectCard(ev.id); });
     credits.appendChild(row);
   });
