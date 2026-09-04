@@ -56,7 +56,7 @@ function dressToday() {
   var box = document.getElementById("credits");
   if (!box) return;
   var head = box.querySelector("h4");
-  if (head) head.textContent = "ON AIR";
+  if (head) head.textContent = "TODAY";
   box.querySelectorAll(".cr").forEach(function (row) {
     var span = row.querySelector("span");
     var time = row.querySelector("b");
