@@ -2,6 +2,7 @@ const LIKES_KEY = "wtv-likes-v1";
 var DAY_ORDER = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Weekend"];
 var mapRef = null;
 var markers = {};
+var state = { day: null, groups: {}, likes: {}, openSheet: null };
 function dayKey(ev) {
   var d = (ev.day || "").toLowerCase();
   if (d.indexOf("mon") === 0) return "Monday";
@@ -62,12 +63,31 @@ function makeCard(ev, likes, openSheet) {
   });
   return el;
 }
+function renderGuide(day) {
+  state.day = day;
+  var feed = document.getElementById("feed");
+  var title = document.getElementById("guideTitle");
+  feed.innerHTML = "";
+  title.textContent = (day === todayName() ? "TODAY" : day.toUpperCase());
+  document.querySelectorAll(".chip").forEach(function (c) {
+    c.classList.toggle("on", c.getAttribute("data-day") === day);
+  });
+  var list = (state.groups[day] || []).slice().sort(timeSort);
+  if (!list.length) {
+    var p = document.createElement("p");
+    p.className = "meta";
+    p.textContent = "Dark on this day.";
+    feed.appendChild(p);
+    return;
+  }
+  list.forEach(function (ev) { feed.appendChild(makeCard(ev, state.likes, state.openSheet)); });
+}
 function main() {
   var data = JSON.parse(JSON.stringify(window.SEED));
   var extra = [];
   try { extra = JSON.parse(localStorage.getItem("wtv-published-v1") || "[]"); } catch (e) { extra = []; }
   data.events = extra.concat(data.events);
-  var likes = loadLikes();
+  state.likes = loadLikes();
   var today = todayName();
   var todayList = data.events.filter(function (ev) { return dayKey(ev) === today; }).sort(timeSort);
   var bc = window.BROADCAST || { status: "idle", windows: [] };
@@ -137,6 +157,20 @@ function main() {
     watch.appendChild(a);
   });
 
+  var stillsSec = document.getElementById("stillsSection");
+  var stills = document.getElementById("stills");
+  stills.innerHTML = "";
+  if (data.gallery && data.gallery.length) {
+    stillsSec.classList.remove("hidden");
+    data.gallery.forEach(function (src) {
+      var img = document.createElement("img");
+      img.src = src; img.alt = "Session still"; bindImg(img);
+      stills.appendChild(img);
+    });
+  } else {
+    stillsSec.classList.add("hidden");
+  }
+
   var credits = document.getElementById("credits");
   credits.innerHTML = "<h4>TODAY</h4>";
   if (!todayList.length) {
@@ -156,49 +190,37 @@ function main() {
     credits.appendChild(row);
   });
 
-  var feed = document.getElementById("feed");
   var chips = document.getElementById("chips");
-  feed.innerHTML = ""; chips.innerHTML = "";
+  chips.innerHTML = "";
   var sheet = document.getElementById("sheet");
-  function openSheet(ev) {
+  state.openSheet = function (ev) {
     document.getElementById("sName").textContent = ev.name;
     document.getElementById("sWhen").textContent = ev.rule + " · " + ev.day + " " + ev.time;
     document.getElementById("sWhere").textContent = ev.venue + " · " + ev.address;
     document.getElementById("sPrice").textContent = ev.price + " · " + ev.capacity;
     document.getElementById("sLink").href = ev.instagram;
     sheet.classList.add("open");
-  }
+  };
   document.getElementById("closeSheet").onclick = function () { sheet.classList.remove("open"); };
   sheet.onclick = function (e) { if (e.target === sheet) sheet.classList.remove("open"); };
 
-  var groups = {};
+  state.groups = {};
   data.events.forEach(function (ev) {
     var k = dayKey(ev);
-    if (!groups[k]) groups[k] = [];
-    groups[k].push(ev);
+    if (!state.groups[k]) state.groups[k] = [];
+    state.groups[k].push(ev);
   });
   DAY_ORDER.forEach(function (day) {
-    var list = groups[day];
-    if (!list || !list.length) return;
-    list.sort(timeSort);
+    if (!state.groups[day] || !state.groups[day].length) return;
     var chip = document.createElement("button");
     chip.type = "button";
-    chip.className = "chip" + (day === today ? " on" : "");
+    chip.className = "chip";
+    chip.setAttribute("data-day", day);
     chip.textContent = day === today ? "TODAY" : day.slice(0, 3).toUpperCase();
-    chip.addEventListener("click", function () {
-      document.querySelectorAll(".chip").forEach(function (c) { c.classList.remove("on"); });
-      chip.classList.add("on");
-      var rail = document.getElementById("day-" + day);
-      if (rail) rail.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+    chip.addEventListener("click", function () { renderGuide(day); });
     chips.appendChild(chip);
-    var h = document.createElement("div");
-    h.className = "day-rail" + (day === today ? " today" : "");
-    h.id = "day-" + day;
-    h.textContent = (day === today ? "TODAY · " : "") + day.toUpperCase();
-    feed.appendChild(h);
-    list.forEach(function (ev) { feed.appendChild(makeCard(ev, likes, openSheet)); });
   });
+  renderGuide(state.groups[today] ? today : DAY_ORDER.filter(function (d) { return state.groups[d]; })[0]);
 
   var mapEl = document.getElementById("map");
   if (window.L) {
