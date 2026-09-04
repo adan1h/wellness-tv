@@ -16,13 +16,13 @@
     grid-template-columns: 108px minmax(0, 1fr) 108px;
     grid-template-areas:
       "film stage film2"
-      ". log .";
+      "today today today";
     align-items: start;
   }
   .film { grid-area: film; }
   .film-end { grid-area: film2; }
   .stage { grid-area: stage; }
-  .log { grid-area: log; }
+  .log { grid-area: today; }
 }
 
 .stage { display: flex; flex-direction: column; }
@@ -47,18 +47,11 @@
       );
   }
   .film .cell {
-    flex: 0 0 auto;
-    height: 112px;
-    margin: 0 8px;
-    border-radius: 0;
-    border: 0;
-    background: #000;
+    flex: 0 0 auto; height: 112px; margin: 0 8px;
+    border-radius: 0; border: 0; background: #000;
   }
-  .film .cell::before,
-  .film .cell::after { display: none; }
-  .film .cell img {
-    height: 100%; width: 100%; object-fit: cover; animation: none;
-  }
+  .film .cell::before, .film .cell::after { display: none; }
+  .film .cell img { height: 100%; width: 100%; object-fit: cover; animation: none; }
 }
 
 .frame {
@@ -76,7 +69,7 @@
   .lower p { display: none; }
 }
 
-.bill { display: block; text-align: center; padding: 20px 8px 10px; }
+.bill { display: block; text-align: center; padding: 20px 8px 8px; }
 .ep-line { font-size: 10px; letter-spacing: .22em; color: #d4b36a; }
 .bill h2 {
   font-family: "Instrument Serif", Georgia, serif;
@@ -86,31 +79,54 @@
 .byline { font-size: 10px; letter-spacing: .16em; color: #8a8376; }
 
 .log {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 28px;
-  text-align: center;
-  padding: 8px 0 12px;
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  margin: 8px auto 20px;
+  padding: 18px 16px 8px;
+  border-top: 1px solid #2a2c32;
 }
 .log h4 {
-  width: 100%;
-  font-size: 10px;
-  letter-spacing: .2em;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: .22em;
   color: #d4b36a;
-  margin-bottom: 4px;
+  margin-bottom: 16px;
+  text-align: left;
 }
 .log h4::before { content: "\25cf "; color: #e85d4c; }
 .log .cr {
-  display: block; background: transparent; border: 0; padding: 0; margin: 0;
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 16px;
+  align-items: baseline;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #2a2c32;
+  padding: 14px 0;
+  margin: 0;
+  text-align: left;
+  opacity: 1;
 }
 .log .cr b {
-  display: block; font-size: 18px; letter-spacing: .08em; color: #efe8d8; margin-bottom: 2px;
+  display: block;
+  font-size: 22px;
+  letter-spacing: .04em;
+  color: #d4b36a;
+  font-family: Inter, system-ui, sans-serif;
+  font-weight: 600;
 }
 .log .cr span {
-  display: block; font-size: 10px; letter-spacing: .16em; color: #8a8376; text-transform: uppercase;
+  display: block;
+  font-size: 20px;
+  letter-spacing: 0;
+  color: #efe8d8;
+  text-transform: none;
+  font-family: "Instrument Serif", Georgia, serif;
+  line-height: 1.2;
 }
-.log .cr.done { opacity: .4; }
+.log .cr.done { opacity: .55; }
+.log .cr.live span { color: #d4b36a; }
 
 .watch { max-width: 1240px; margin: 0 auto; padding: 6px 16px; }
 .wall { max-width: 1240px; margin: 0 auto; padding: 8px 16px 4px; }
