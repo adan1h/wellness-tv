@@ -32,40 +32,32 @@ function paintFloor() {
     row.appendChild(a);
   });
 }
-function dressRundown() {
+function dressToday() {
+  var scene = document.getElementById("scene");
+  if (scene) scene.remove();
+  var tag = document.getElementById("epTag");
+  if (tag) tag.textContent = "LIVE GUIDE";
   var box = document.getElementById("credits");
   if (!box) return;
-  var rows = box.querySelectorAll(".cr");
-  var tag = document.getElementById("epTag");
-  var day = tag ? tag.textContent.replace("EPISODE · ", "").replace("EPISODE ·", "") : "TODAY";
-  if (tag) tag.textContent = "EP " + day.trim();
   var head = box.querySelector("h4");
-  if (head) {
-    head.innerHTML = "<em>RUNDOWN</em><strong></strong>";
-    head.querySelector("strong").textContent = day.trim();
-  }
-  rows.forEach(function (row) {
+  if (head) head.textContent = "TODAY";
+  box.querySelectorAll(".cr").forEach(function (row) {
     var span = row.querySelector("span");
     if (!span) return;
     var text = span.textContent || "";
-    var mark = "";
-    if (text.indexOf("NOW") === 0) mark = "NOW";
-    else if (text.indexOf("NEXT") === 0) mark = "NEXT";
-    else if (text.indexOf("PAST") === 0) mark = "PAST";
-    if (mark) {
-      row.classList.add("is-" + mark.toLowerCase());
-      span.textContent = text.replace(mark + " · ", "").replace(mark + " ·", "");
-      var flag = document.createElement("i");
-      flag.className = "flag";
-      flag.textContent = mark;
-      row.insertBefore(flag, span);
-    }
+    row.classList.remove("is-now", "is-next", "is-past");
+    var old = row.querySelector(".flag");
+    if (old) old.remove();
+    if (text.indexOf("NOW") === 0) row.classList.add("live");
+    else if (text.indexOf("NEXT") === 0) row.classList.add("up");
+    else if (text.indexOf("PAST") === 0) row.classList.add("done");
+    span.textContent = text.replace(/^(NOW|NEXT|PAST)\s*·\s*/, "");
   });
 }
 function bootSocial() {
   paintId();
   paintFloor();
-  dressRundown();
+  dressToday();
   var sheet = document.getElementById("idSheet");
   var btn = document.getElementById("idBtn");
   if (btn && sheet) btn.onclick = function () { sheet.classList.add("open"); };
