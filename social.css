@@ -1,0 +1,33 @@
+.mast-right { display: flex; align-items: center; gap: 12px; }
+.id-btn {
+  background: transparent; color: var(--cream); border: 1px solid var(--line);
+  font-size: 10px; letter-spacing: .14em; padding: 6px 10px; cursor: pointer;
+}
+.id-btn.on { border-color: var(--gold); color: var(--gold); }
+.scene {
+  max-width: 1240px; margin: 0 auto; padding: 0 20px 8px;
+  font-size: 11px; letter-spacing: .16em; color: var(--gold);
+}
+.card.now h4 { color: var(--gold); }
+.card.past { opacity: .55; }
+.floor { max-width: 1240px; margin: 0 auto; padding: 8px 16px 28px; }
+.floor h3 { font-size: 10px; letter-spacing: .2em; color: var(--gold); margin-bottom: 8px; }
+.floor-note { color: var(--muted); font-size: 12px; max-width: 52ch; margin-bottom: 12px; line-height: 1.45; }
+.floor-row { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; }
+.tag-card {
+  flex: 0 0 220px; text-decoration: none; color: var(--cream);
+  border: 1px solid var(--line); padding-bottom: 10px;
+}
+.tag-card img { height: 140px; object-fit: cover; }
+.tag-card b, .tag-card span, .tag-card em { display: block; padding: 0 10px; }
+.tag-card b { font-size: 11px; letter-spacing: .06em; margin-top: 8px; color: var(--gold); }
+.tag-card span { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.tag-card em { font-size: 11px; color: var(--muted); margin-top: 6px; font-style: normal; }
+.id-go {
+  display: block; width: 100%; margin-top: 10px; padding: 12px;
+  background: var(--gold); color: #07080a; border: 0; font-weight: 700; cursor: pointer;
+}
+.id-out {
+  display: block; width: 100%; margin-top: 10px; padding: 10px;
+  background: transparent; color: var(--muted); border: 1px solid var(--line); cursor: pointer;
+}
