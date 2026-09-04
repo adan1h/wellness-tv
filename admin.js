@@ -1,5 +1,26 @@
 const KEY = "wtv-published-v1";
 const AIR = "wtv-broadcast-v1";
+const GATE = "wtv-pub-ok";
+const PUB_KEY = "tbay2026";
+function gated() { return sessionStorage.getItem(GATE) === "1"; }
+function askGate() {
+  if (gated()) return true;
+  var wrap = document.createElement("div");
+  wrap.id = "gate";
+  wrap.innerHTML = '<div class="box" style="max-width:420px;margin:40px auto;"><h3>Publisher key</h3><p class="note">Temporary lock. Backend comes later.</p><input id="gateKey" type="password" placeholder="key" /><button class="publish" id="gateGo" type="button">Enter</button></div>';
+  document.body.innerHTML = "";
+  document.body.appendChild(wrap);
+  document.getElementById("gateGo").onclick = function () {
+    var v = document.getElementById("gateKey").value;
+    if (v === PUB_KEY) {
+      sessionStorage.setItem(GATE, "1");
+      location.reload();
+    } else {
+      alert("Wrong key.");
+    }
+  };
+  return false;
+}
 function load() {
   try { return JSON.parse(localStorage.getItem(KEY) || "[]"); }
   catch (e) { return []; }
@@ -11,6 +32,7 @@ function loadAir() {
 }
 function render() {
   var list = document.getElementById("list");
+  if (!list) return;
   var rows = load();
   list.innerHTML = rows.length ? "" : "<p class='note'>No extra sessions on this device.</p>";
   rows.forEach(function (r, i) {
@@ -44,49 +66,53 @@ function render() {
     form.tiktok.value = urlFor("TikTok");
   }
 }
-document.getElementById("air").addEventListener("submit", function (e) {
-  e.preventDefault();
-  var f = e.target;
-  var payload = {
-    status: f.status.value,
-    title: f.title.value.trim(),
-    note: f.note.value.trim(),
-    eventId: f.eventId.value.trim(),
-    replayUrl: f.replay.value.trim(),
-    windows: [
-      { platform: "YouTube", aspect: "16:9", role: "replay + long live", url: f.youtube.value.trim() },
-      { platform: "Kick", aspect: "16:9", role: "long live", url: f.kick.value.trim() },
-      { platform: "X", aspect: "16:9", role: "live + clip", url: f.x.value.trim() },
-      { platform: "TikTok", aspect: "9:16", role: "short live + clip", url: f.tiktok.value.trim() }
-    ]
-  };
-  localStorage.setItem(AIR, JSON.stringify(payload));
-  render();
-  alert("On this device the channel will read the new status. Open the home and hard-refresh.");
-});
-document.getElementById("form").addEventListener("submit", function (e) {
-  e.preventDefault();
-  var f = e.target;
-  var rows = load();
-  rows.unshift({
-    id: "PUB-" + Date.now(),
-    name: f.name.value.trim(),
-    type: "Session",
-    day: f.day.value.trim(),
-    time: f.time.value.trim(),
-    rule: f.rule.value.trim() || f.day.value.trim(),
-    venue: f.venue.value.trim(),
-    address: f.address.value.trim() || f.venue.value.trim(),
-    city: f.city.value,
-    price: f.price.value.trim() || "Free",
-    capacity: f.capacity.value.trim() || "Drop-in",
-    instagram: f.instagram.value.trim() || "#",
-    lat: parseFloat(f.lat.value) || 27.77,
-    lng: parseFloat(f.lng.value) || -82.64,
-    image: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=900&q=80"
+if (!askGate()) {
+  /* stop */
+} else {
+  document.getElementById("air").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var f = e.target;
+    var payload = {
+      status: f.status.value,
+      title: f.title.value.trim(),
+      note: f.note.value.trim(),
+      eventId: f.eventId.value.trim(),
+      replayUrl: f.replay.value.trim(),
+      windows: [
+        { platform: "YouTube", aspect: "16:9", role: "replay + long live", url: f.youtube.value.trim() },
+        { platform: "Kick", aspect: "16:9", role: "long live", url: f.kick.value.trim() },
+        { platform: "X", aspect: "16:9", role: "live + clip", url: f.x.value.trim() },
+        { platform: "TikTok", aspect: "9:16", role: "short live + clip", url: f.tiktok.value.trim() }
+      ]
+    };
+    localStorage.setItem(AIR, JSON.stringify(payload));
+    render();
+    alert("Channel updated on this device. Open home and hard-refresh.");
   });
-  save(rows);
-  f.reset();
+  document.getElementById("form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var f = e.target;
+    var rows = load();
+    rows.unshift({
+      id: "PUB-" + Date.now(),
+      name: f.name.value.trim(),
+      type: "Session",
+      day: f.day.value.trim(),
+      time: f.time.value.trim(),
+      rule: f.rule.value.trim() || f.day.value.trim(),
+      venue: f.venue.value.trim(),
+      address: f.address.value.trim() || f.venue.value.trim(),
+      city: f.city.value,
+      price: f.price.value.trim() || "Free",
+      capacity: f.capacity.value.trim() || "Drop-in",
+      instagram: f.instagram.value.trim() || "#",
+      lat: parseFloat(f.lat.value) || 27.77,
+      lng: parseFloat(f.lng.value) || -82.64,
+      image: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=900&q=80"
+    });
+    save(rows);
+    f.reset();
+    render();
+  });
   render();
-});
-render();
+}
