@@ -9,37 +9,56 @@
   margin: 0 auto;
   padding: 8px 16px 6px;
   display: grid;
-  gap: 14px;
+  gap: 12px;
 }
 @media (min-width: 960px) {
   .theatre {
-    grid-template-columns: 118px minmax(0, 1fr) 168px;
+    grid-template-columns: 108px minmax(0, 1fr) 108px;
+    grid-template-areas:
+      "film stage film2"
+      ". log .";
     align-items: start;
   }
+  .film { grid-area: film; }
+  .film-end { grid-area: film2; }
+  .stage { grid-area: stage; }
+  .log { grid-area: log; }
 }
 
-.stage {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-}
+.stage { display: flex; flex-direction: column; }
 
 .film { display: none; }
 @media (min-width: 960px) {
   .film {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding: 8px 6px;
-    background: repeating-linear-gradient(180deg, #1a1b1f 0 8px, transparent 8px 16px);
-    border-left: 10px solid #111;
-    border-right: 10px solid #111;
+    gap: 8px;
+    padding: 10px 0;
+    background: #0a0a0c;
+    border-left: 9px solid #151515;
+    border-right: 9px solid #151515;
+    background-image:
+      repeating-linear-gradient(
+        180deg,
+        #0a0a0c 0 10px,
+        #0a0a0c 10px 18px,
+        #2c2c30 18px 22px,
+        #0a0a0c 22px 30px
+      );
   }
   .film .cell {
-    flex: 0 0 auto; height: 118px; border-radius: 0; border: 0; background: #000;
+    flex: 0 0 auto;
+    height: 112px;
+    margin: 0 8px;
+    border-radius: 0;
+    border: 0;
+    background: #000;
   }
-  .film .cell::before, .film .cell::after { display: none; }
-  .film .cell img { height: 100%; width: 100%; object-fit: cover; animation: none; }
+  .film .cell::before,
+  .film .cell::after { display: none; }
+  .film .cell img {
+    height: 100%; width: 100%; object-fit: cover; animation: none;
+  }
 }
 
 .frame {
@@ -57,11 +76,7 @@
   .lower p { display: none; }
 }
 
-.bill {
-  display: block;
-  text-align: center;
-  padding: 20px 8px 18px;
-}
+.bill { display: block; text-align: center; padding: 20px 8px 10px; }
 .ep-line { font-size: 10px; letter-spacing: .22em; color: #d4b36a; }
 .bill h2 {
   font-family: "Instrument Serif", Georgia, serif;
@@ -70,20 +85,30 @@
 }
 .byline { font-size: 10px; letter-spacing: .16em; color: #8a8376; }
 
-.log { display: none; }
-@media (min-width: 960px) {
-  .log { display: block; padding: 8px 0 0 6px; text-align: right; }
+.log {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 28px;
+  text-align: center;
+  padding: 8px 0 12px;
 }
-.log h4 { font-size: 10px; letter-spacing: .2em; color: #d4b36a; margin-bottom: 18px; }
+.log h4 {
+  width: 100%;
+  font-size: 10px;
+  letter-spacing: .2em;
+  color: #d4b36a;
+  margin-bottom: 4px;
+}
 .log h4::before { content: "\25cf "; color: #e85d4c; }
 .log .cr {
-  display: block; background: transparent; border: 0; padding: 0 0 18px; margin: 0; text-align: right;
+  display: block; background: transparent; border: 0; padding: 0; margin: 0;
 }
 .log .cr b {
-  display: block; font-size: 20px; letter-spacing: .08em; color: #efe8d8; margin-bottom: 2px;
+  display: block; font-size: 18px; letter-spacing: .08em; color: #efe8d8; margin-bottom: 2px;
 }
 .log .cr span {
-  display: block; font-size: 11px; letter-spacing: .16em; color: #8a8376; text-transform: uppercase;
+  display: block; font-size: 10px; letter-spacing: .16em; color: #8a8376; text-transform: uppercase;
 }
 .log .cr.done { opacity: .4; }
 
