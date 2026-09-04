@@ -4,32 +4,58 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0D1B2A" />
-  <title>Wellness TV</title>
+  <title>Wellness TV — St. Petersburg / Tampa Bay</title>
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" href="./icon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <header class="top">
-    <div class="brand">Wellness TV</div>
-    <div class="sub">St. Petersburg / Tampa Bay</div>
+  <header class="mast">
+    <div>
+      <div class="brand">Wellness TV</div>
+      <div class="sub">St. Petersburg / Tampa Bay channel</div>
+    </div>
+    <div class="mast-right">
+      <span class="live-pill" id="livePill">ON THE BOARD</span>
+    </div>
   </header>
+
   <section class="hero" id="hero">
     <img id="heroImg" alt="" />
     <div class="shade"></div>
-    <span class="badge">REPLAY</span>
+    <span class="badge" id="heroBadge">REPLAY</span>
     <div class="hero-copy">
       <h2 id="heroTitle">Last session</h2>
       <p id="heroSub">The board fills as the week locks in.</p>
     </div>
   </section>
-  <section class="section"><h3>CHANNEL WALL</h3><div class="wall" id="wall"></div></section>
-  <section class="section"><h3>THIS WEEK</h3><div id="feed"></div></section>
-  <section class="section"><h3>GALLERY</h3><div class="gallery" id="gallery"></div></section>
-  <section class="section"><h3>THIS WEEK ON THE MAP</h3></section>
-  <div id="map"></div>
-  <p class="legal">Wellness TV lists public sessions and sends you to the crew page. Working title. <a href="./admin.html">Publisher</a></p>
+
+  <nav class="chips" id="chips" aria-label="Days this week"></nav>
+
+  <main class="board">
+    <section class="guide">
+      <h3>THIS WEEK</h3>
+      <div id="feed"></div>
+    </section>
+    <aside class="side">
+      <h3>ON THE MAP</h3>
+      <div id="map"></div>
+      <p class="side-note">Tap a card or a pin. We send you to the crew page — we do not replace Instagram.</p>
+    </aside>
+  </main>
+
+  <section class="section dim" id="wallSection">
+    <h3>CHANNEL WALL</h3>
+    <div class="wall" id="wall"></div>
+  </section>
+  <section class="section dim" id="gallerySection">
+    <h3>GALLERY</h3>
+    <div class="gallery" id="gallery"></div>
+  </section>
+
+  <p class="legal">Wellness TV lists public in-person sessions in Tampa Bay. Working title. <a href="./admin.html">Publisher</a></p>
+
   <div class="sheet" id="sheet">
     <div class="sheet-card">
       <button class="close" id="closeSheet" type="button">x</button>
@@ -37,7 +63,7 @@
       <p id="sWhen"></p>
       <p id="sWhere"></p>
       <p id="sPrice"></p>
-      <a id="sLink" href="#" target="_blank" rel="noopener">Instagram / site</a>
+      <a id="sLink" href="#" target="_blank" rel="noopener">Open crew page</a>
     </div>
   </div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
