@@ -32,6 +32,15 @@ function paintFloor() {
     row.appendChild(a);
   });
 }
+function mirrorFilm() {
+  var a = document.getElementById("strip");
+  var b = document.getElementById("stripEnd");
+  if (!a || !b) return;
+  b.innerHTML = "";
+  [].slice.call(a.children).forEach(function (cell) {
+    b.appendChild(cell.cloneNode(true));
+  });
+}
 function dressToday() {
   var scene = document.getElementById("scene");
   if (scene) scene.remove();
@@ -43,6 +52,7 @@ function dressToday() {
   if (line) line.textContent = "WELLNESS TV · EPISODE";
   var hero = document.getElementById("heroTitle");
   if (hero) hero.textContent = day.slice(0, 3) + " · IN THE BAY";
+  mirrorFilm();
   var box = document.getElementById("credits");
   if (!box) return;
   var head = box.querySelector("h4");
