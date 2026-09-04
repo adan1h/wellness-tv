@@ -32,24 +32,40 @@ function paintFloor() {
     row.appendChild(a);
   });
 }
-function paintOrbit() {
-  var orbit = document.getElementById("orbit");
-  if (!orbit) return;
-  orbit.innerHTML = "";
-  var srcs = [];
-  if (window.SEED && window.SEED.gallery) srcs = srcs.concat(window.SEED.gallery);
-  (window.TAG_FEED || []).forEach(function (t) { if (t.image) srcs.push(t.image); });
-  srcs.slice(0, 5).forEach(function (src) {
-    var img = document.createElement("img");
-    img.src = src;
-    img.alt = "";
-    orbit.appendChild(img);
+function dressRundown() {
+  var box = document.getElementById("credits");
+  if (!box) return;
+  var rows = box.querySelectorAll(".cr");
+  var tag = document.getElementById("epTag");
+  var day = tag ? tag.textContent.replace("EPISODE · ", "").replace("EPISODE ·", "") : "TODAY";
+  if (tag) tag.textContent = "EP " + day.trim();
+  var head = box.querySelector("h4");
+  if (head) {
+    head.innerHTML = "<em>RUNDOWN</em><strong></strong>";
+    head.querySelector("strong").textContent = day.trim();
+  }
+  rows.forEach(function (row) {
+    var span = row.querySelector("span");
+    if (!span) return;
+    var text = span.textContent || "";
+    var mark = "";
+    if (text.indexOf("NOW") === 0) mark = "NOW";
+    else if (text.indexOf("NEXT") === 0) mark = "NEXT";
+    else if (text.indexOf("PAST") === 0) mark = "PAST";
+    if (mark) {
+      row.classList.add("is-" + mark.toLowerCase());
+      span.textContent = text.replace(mark + " · ", "").replace(mark + " ·", "");
+      var flag = document.createElement("i");
+      flag.className = "flag";
+      flag.textContent = mark;
+      row.insertBefore(flag, span);
+    }
   });
 }
 function bootSocial() {
   paintId();
   paintFloor();
-  paintOrbit();
+  dressRundown();
   var sheet = document.getElementById("idSheet");
   var btn = document.getElementById("idBtn");
   if (btn && sheet) btn.onclick = function () { sheet.classList.add("open"); };
