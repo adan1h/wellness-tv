@@ -18,36 +18,21 @@
   <section class="hero" id="hero">
     <img id="heroImg" alt="" />
     <div class="shade"></div>
-    <span class="badge" id="heroBadge">REPLAY</span>
+    <span class="badge">REPLAY</span>
     <div class="hero-copy">
-      <h2 id="heroTitle">Last session · replay</h2>
+      <h2 id="heroTitle">Last session</h2>
       <p id="heroSub">The board fills as the week locks in.</p>
     </div>
   </section>
-  <section class="section">
-    <h3>CHANNEL WALL</h3>
-    <div class="wall" id="wall"></div>
-  </section>
-  <section class="section">
-    <h3>THIS WEEK</h3>
-    <div id="feed"></div>
-  </section>
-  <section class="section">
-    <h3>GALLERY</h3>
-    <div class="gallery" id="gallery"></div>
-  </section>
-  <section class="section">
-    <h3>THIS WEEK ON THE MAP</h3>
-  </section>
+  <section class="section"><h3>CHANNEL WALL</h3><div class="wall" id="wall"></div></section>
+  <section class="section"><h3>THIS WEEK</h3><div id="feed"></div></section>
+  <section class="section"><h3>GALLERY</h3><div class="gallery" id="gallery"></div></section>
+  <section class="section"><h3>THIS WEEK ON THE MAP</h3></section>
   <div id="map"></div>
-  <p class="legal">
-    Wellness TV lists public sessions and sends you to the crew’s own page.
-    Working title. Not a ticket marketplace.
-    <a href="./admin.html">Publisher</a>
-  </p>
+  <p class="legal">Wellness TV lists public sessions and sends you to the crew page. Working title. <a href="./admin.html">Publisher</a></p>
   <div class="sheet" id="sheet">
     <div class="sheet-card">
-      <button class="close" id="closeSheet" aria-label="Close">×</button>
+      <button class="close" id="closeSheet" type="button">x</button>
       <h3 id="sName"></h3>
       <p id="sWhen"></p>
       <p id="sWhere"></p>
@@ -56,6 +41,7 @@
     </div>
   </div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="./data.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>
