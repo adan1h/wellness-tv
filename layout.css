@@ -70,6 +70,15 @@
   .lower p { display: none; }
 }
 
+.stage .watch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 0 0;
+  margin: 0;
+  max-width: none;
+}
+
 .bill { display: block; text-align: center; padding: 20px 8px 8px; }
 .ep-line { font-size: 10px; letter-spacing: .22em; color: #d4b36a; }
 .bill h2 {
@@ -106,11 +115,7 @@
   margin: 0;
   text-align: left;
 }
-.log .cr b {
-  font-size: 18px;
-  color: #d4b36a;
-  font-weight: 600;
-}
+.log .cr b { font-size: 18px; color: #d4b36a; font-weight: 600; }
 .log .cr-body strong {
   display: block;
   font-family: "Instrument Serif", Georgia, serif;
@@ -132,7 +137,6 @@
 }
 .log .cr .like.on { border-color: #d4b36a; }
 
-.watch { max-width: 1240px; margin: 0 auto; padding: 6px 16px; }
 .wall { max-width: 1240px; margin: 0 auto; padding: 8px 16px 4px; }
 .wall h3 { font-size: 10px; letter-spacing: .2em; color: #8a8376; margin-bottom: 10px; }
 .wall-row, .stills-row { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
