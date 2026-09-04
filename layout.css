@@ -3,6 +3,7 @@
 .orbit { display: none !important; }
 .side { display: none !important; }
 .mini-map, #map { display: none !important; }
+.board, .chips { display: none !important; }
 
 .theatre {
   max-width: 1240px;
@@ -81,52 +82,55 @@
 .log {
   display: block;
   width: 100%;
-  max-width: 720px;
+  max-width: 760px;
   margin: 8px auto 20px;
   padding: 18px 16px 8px;
   border-top: 1px solid #2a2c32;
 }
 .log h4 {
-  font-family: Inter, system-ui, sans-serif;
   font-size: 11px;
   letter-spacing: .22em;
   color: #d4b36a;
   margin-bottom: 16px;
-  text-align: left;
 }
 .log h4::before { content: "\25cf "; color: #e85d4c; }
 .log .cr {
   display: grid;
-  grid-template-columns: 92px 1fr;
-  gap: 16px;
-  align-items: baseline;
+  grid-template-columns: 88px 1fr 40px;
+  gap: 12px;
+  align-items: center;
   background: transparent;
   border: 0;
   border-bottom: 1px solid #2a2c32;
   padding: 14px 0;
   margin: 0;
   text-align: left;
-  opacity: 1;
 }
 .log .cr b {
-  display: block;
-  font-size: 22px;
-  letter-spacing: .04em;
+  font-size: 18px;
   color: #d4b36a;
-  font-family: Inter, system-ui, sans-serif;
   font-weight: 600;
 }
-.log .cr span {
+.log .cr-body strong {
   display: block;
-  font-size: 20px;
-  letter-spacing: 0;
-  color: #efe8d8;
-  text-transform: none;
   font-family: "Instrument Serif", Georgia, serif;
-  line-height: 1.2;
+  font-size: 20px;
+  font-weight: 400;
+  color: #efe8d8;
 }
-.log .cr.done { opacity: .55; }
-.log .cr.live span { color: #d4b36a; }
+.log .cr-body em,
+.log .cr-body i {
+  display: block;
+  font-style: normal;
+  font-size: 12px;
+  color: #8a8376;
+  margin-top: 3px;
+}
+.log .cr .like {
+  width: 34px; height: 34px; border: 1px solid #2a2c32;
+  background: transparent; color: #d4b36a; border-radius: 50%; cursor: pointer;
+}
+.log .cr .like.on { border-color: #d4b36a; }
 
 .watch { max-width: 1240px; margin: 0 auto; padding: 6px 16px; }
 .wall { max-width: 1240px; margin: 0 auto; padding: 8px 16px 4px; }
