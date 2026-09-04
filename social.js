@@ -32,9 +32,24 @@ function paintFloor() {
     row.appendChild(a);
   });
 }
+function paintOrbit() {
+  var orbit = document.getElementById("orbit");
+  if (!orbit) return;
+  orbit.innerHTML = "";
+  var srcs = [];
+  if (window.SEED && window.SEED.gallery) srcs = srcs.concat(window.SEED.gallery);
+  (window.TAG_FEED || []).forEach(function (t) { if (t.image) srcs.push(t.image); });
+  srcs.slice(0, 5).forEach(function (src) {
+    var img = document.createElement("img");
+    img.src = src;
+    img.alt = "";
+    orbit.appendChild(img);
+  });
+}
 function bootSocial() {
   paintId();
   paintFloor();
+  paintOrbit();
   var sheet = document.getElementById("idSheet");
   var btn = document.getElementById("idBtn");
   if (btn && sheet) btn.onclick = function () { sheet.classList.add("open"); };
