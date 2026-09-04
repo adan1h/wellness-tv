@@ -23,22 +23,13 @@ function loadLikes() {
 }
 function saveLikes(map) { localStorage.setItem(LIKES_KEY, JSON.stringify(map)); }
 function heart(on) { return on ? "\u2665" : "\u2661"; }
-function bindImg(img) { img.addEventListener("error", function () { img.style.opacity = "0.15"; }); }
-function emptyBox(text) {
-  var p = document.createElement("p");
-  p.className = "empty";
-  p.textContent = text;
-  return p;
-}
+function bindImg(img) { img.addEventListener("error", function () { img.style.opacity = "0.2"; }); }
 function selectCard(id) {
   document.querySelectorAll(".card").forEach(function (c) {
-    c.classList.toggle("sel", c.getAttribute("data-id") === id);
+    c.style.opacity = c.getAttribute("data-id") === id ? "1" : ".65";
   });
   var m = markers[id];
-  if (mapRef && m) {
-    mapRef.setView(m.getLatLng(), 13);
-    m.openPopup();
-  }
+  if (mapRef && m) { mapRef.setView(m.getLatLng(), 13); m.openPopup(); }
 }
 function makeCard(ev, likes, openSheet) {
   var el = document.createElement("article");
@@ -54,10 +45,7 @@ function makeCard(ev, likes, openSheet) {
   var btn = el.querySelector(".like");
   if (on) btn.classList.add("on");
   btn.textContent = heart(on);
-  el.addEventListener("click", function () {
-    selectCard(ev.id);
-    openSheet(ev);
-  });
+  el.addEventListener("click", function () { selectCard(ev.id); openSheet(ev); });
   btn.addEventListener("click", function (e) {
     e.stopPropagation();
     likes[ev.id] = !likes[ev.id];
@@ -74,32 +62,52 @@ function main() {
   data.events = extra.concat(data.events);
   var likes = loadLikes();
   var today = todayName();
+  var todayList = data.events.filter(function (ev) { return dayKey(ev) === today; }).sort(timeSort);
+
+  document.getElementById("epTag").textContent = "EPISODE · " + today.toUpperCase();
+  document.getElementById("heroTitle").textContent = today.toUpperCase() + " IN THE BAY";
+  document.getElementById("heroSub").textContent = todayList.length
+    ? todayList.length + " sessions on the board · first shoot still pending"
+    : "No locked session today · the week still plays below";
   var heroImg = document.getElementById("heroImg");
   heroImg.src = data.replay.image;
   bindImg(heroImg);
-  document.getElementById("heroTitle").textContent = data.replay.title;
-  document.getElementById("heroSub").textContent = data.replay.subtitle;
+  document.getElementById("playBtn").onclick = function () {
+    if (todayList[0]) selectCard(todayList[0].id);
+  };
 
-  var wallSec = document.getElementById("wallSection");
-  var wall = document.getElementById("wall");
-  wall.innerHTML = "";
-  if (!data.wall.length) {
-    wallSec.classList.add("hidden");
-  } else {
-    data.wall.forEach(function (w) {
-      var fig = document.createElement("figure");
-      var img = document.createElement("img");
-      img.src = w.image; img.alt = w.label; bindImg(img);
-      var cap = document.createElement("figcaption");
-      cap.textContent = w.label;
-      fig.appendChild(img); fig.appendChild(cap); wall.appendChild(fig);
-    });
+  var strip = document.getElementById("strip");
+  strip.innerHTML = "";
+  ["CLIP 01", "CLIP 02", "CLIP 03"].forEach(function (label) {
+    var cell = document.createElement("div");
+    cell.className = "cell";
+    var s = document.createElement("span");
+    s.textContent = label + " \u00b7 after first shoot";
+    cell.appendChild(s);
+    strip.appendChild(cell);
+  });
+
+  var credits = document.getElementById("credits");
+  credits.innerHTML = "<h4>TODAY</h4>";
+  if (!todayList.length) {
+    var empty = document.createElement("div");
+    empty.className = "cr";
+    empty.innerHTML = "<b>—</b><span>Dark tonight</span>";
+    credits.appendChild(empty);
   }
+  todayList.forEach(function (ev) {
+    var row = document.createElement("div");
+    row.className = "cr";
+    row.innerHTML = "<b></b><span></span>";
+    row.querySelector("b").textContent = ev.time.replace(" ", "");
+    row.querySelector("span").textContent = ev.name;
+    row.addEventListener("click", function () { selectCard(ev.id); });
+    credits.appendChild(row);
+  });
 
   var feed = document.getElementById("feed");
   var chips = document.getElementById("chips");
-  feed.innerHTML = "";
-  chips.innerHTML = "";
+  feed.innerHTML = ""; chips.innerHTML = "";
   var sheet = document.getElementById("sheet");
   function openSheet(ev) {
     document.getElementById("sName").textContent = ev.name;
@@ -112,55 +120,34 @@ function main() {
   document.getElementById("closeSheet").onclick = function () { sheet.classList.remove("open"); };
   sheet.onclick = function (e) { if (e.target === sheet) sheet.classList.remove("open"); };
 
-  if (!data.events.length) {
-    feed.appendChild(emptyBox("The board is locked until sessions are confirmed."));
-  } else {
-    var groups = {};
-    data.events.forEach(function (ev) {
-      var k = dayKey(ev);
-      if (!groups[k]) groups[k] = [];
-      groups[k].push(ev);
+  var groups = {};
+  data.events.forEach(function (ev) {
+    var k = dayKey(ev);
+    if (!groups[k]) groups[k] = [];
+    groups[k].push(ev);
+  });
+  DAY_ORDER.forEach(function (day) {
+    var list = groups[day];
+    if (!list || !list.length) return;
+    list.sort(timeSort);
+    var chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "chip" + (day === today ? " on" : "");
+    chip.textContent = day === today ? "TODAY" : day.slice(0, 3).toUpperCase();
+    chip.addEventListener("click", function () {
+      document.querySelectorAll(".chip").forEach(function (c) { c.classList.remove("on"); });
+      chip.classList.add("on");
+      var rail = document.getElementById("day-" + day);
+      if (rail) rail.scrollIntoView({ behavior: "smooth", block: "start" });
     });
-    DAY_ORDER.forEach(function (day) {
-      var list = groups[day];
-      if (!list || !list.length) return;
-      list.sort(timeSort);
-      var chip = document.createElement("button");
-      chip.type = "button";
-      chip.className = "chip" + (day === today ? " on" : "");
-      chip.textContent = day === today ? "TODAY" : day.slice(0, 3).toUpperCase();
-      chip.addEventListener("click", function () {
-        document.querySelectorAll(".chip").forEach(function (c) { c.classList.remove("on"); });
-        chip.classList.add("on");
-        var rail = document.getElementById("day-" + day);
-        if (rail) rail.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-      chips.appendChild(chip);
-      var h = document.createElement("div");
-      h.className = "day-rail" + (day === today ? " today" : "");
-      h.id = "day-" + day;
-      h.textContent = (day === today ? "TODAY · " : "") + day.toUpperCase();
-      feed.appendChild(h);
-      list.forEach(function (ev) { feed.appendChild(makeCard(ev, likes, openSheet)); });
-    });
-    var todaySessions = (groups[today] || []).length;
-    var pill = document.getElementById("livePill");
-    if (todaySessions) {
-      pill.textContent = todaySessions + " TODAY";
-      pill.classList.add("hot");
-    }
-  }
-
-  var galSec = document.getElementById("gallerySection");
-  var gallery = document.getElementById("gallery");
-  gallery.innerHTML = "";
-  if (!data.gallery.length) galSec.classList.add("hidden");
-  else {
-    data.gallery.forEach(function (src) {
-      var img = document.createElement("img");
-      img.src = src; img.alt = ""; bindImg(img); gallery.appendChild(img);
-    });
-  }
+    chips.appendChild(chip);
+    var h = document.createElement("div");
+    h.className = "day-rail" + (day === today ? " today" : "");
+    h.id = "day-" + day;
+    h.textContent = (day === today ? "TODAY · " : "") + day.toUpperCase();
+    feed.appendChild(h);
+    list.forEach(function (ev) { feed.appendChild(makeCard(ev, likes, openSheet)); });
+  });
 
   var mapEl = document.getElementById("map");
   if (window.L) {
@@ -171,14 +158,12 @@ function main() {
     data.events.forEach(function (ev) {
       if (!ev.lat) return;
       var mk = L.circleMarker([ev.lat, ev.lng], {
-        radius: 8, color: "#c9a84c", fillColor: "#c9a84c", fillOpacity: 0.9, weight: 1
+        radius: 7, color: "#d4b36a", fillColor: "#d4b36a", fillOpacity: .9, weight: 1
       }).addTo(mapRef).bindPopup("<strong>" + ev.name + "</strong><br>" + ev.day + " " + ev.time);
       mk.on("click", function () { selectCard(ev.id); });
       markers[ev.id] = mk;
     });
-    setTimeout(function () { mapRef.invalidateSize(); }, 200);
-  } else {
-    mapEl.textContent = "Map loads online.";
+    setTimeout(function () { mapRef.invalidateSize(); }, 250);
   }
 }
 document.addEventListener("DOMContentLoaded", main);
