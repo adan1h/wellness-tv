@@ -1,4 +1,19 @@
 const LIKES_KEY = "wtv-likes-v1";
+var DAY_ORDER = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Weekend"];
+function dayKey(ev) {
+  var d = (ev.day || "").toLowerCase();
+  if (d.indexOf("mon") === 0) return "Monday";
+  if (d.indexOf("tue") === 0) return "Tuesday";
+  if (d.indexOf("wed") === 0) return "Wednesday";
+  if (d.indexOf("thu") === 0 && d.indexOf("sun") === -1) return "Thursday";
+  if (d.indexOf("fri") === 0) return "Friday";
+  if (d.indexOf("sat") === 0) return "Saturday";
+  if (d.indexOf("sun") === 0) return "Sunday";
+  return "Weekend";
+}
+function timeSort(a, b) {
+  return String(a.time || "").localeCompare(String(b.time || ""));
+}
 function loadLikes() {
   try { return JSON.parse(localStorage.getItem(LIKES_KEY) || "{}"); }
   catch { return {}; }
@@ -11,6 +26,30 @@ function emptyBox(text) {
   p.className = "empty";
   p.textContent = text;
   return p;
+}
+function makeCard(ev, likes, openSheet) {
+  var el = document.createElement("article");
+  el.className = "card";
+  var on = !!likes[ev.id];
+  el.innerHTML = "<img alt=\"\" /><div><h4></h4><div class=\"meta\"></div><div class=\"price\"></div></div><button class=\"like\" type=\"button\"></button>";
+  var img = el.querySelector("img");
+  img.src = ev.image; bindImg(img);
+  el.querySelector("h4").textContent = ev.name;
+  el.querySelector(".meta").textContent = ev.time + " \u00b7 " + ev.city;
+  el.querySelector(".price").textContent = ev.price + " \u00b7 " + ev.capacity;
+  var btn = el.querySelector(".like");
+  if (on) btn.classList.add("on");
+  btn.textContent = heart(on);
+  img.addEventListener("click", function () { openSheet(ev); });
+  el.querySelector("h4").addEventListener("click", function () { openSheet(ev); });
+  btn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    likes[ev.id] = !likes[ev.id];
+    saveLikes(likes);
+    btn.classList.toggle("on", likes[ev.id]);
+    btn.textContent = heart(!!likes[ev.id]);
+  });
+  return el;
 }
 function main() {
   var data = JSON.parse(JSON.stringify(window.SEED));
@@ -51,31 +90,24 @@ function main() {
   sheet.onclick = function (e) { if (e.target === sheet) sheet.classList.remove("open"); };
   if (!data.events.length) {
     feed.appendChild(emptyBox("The board is locked until sessions are confirmed."));
-  }
-  data.events.forEach(function (ev) {
-    var el = document.createElement("article");
-    el.className = "card";
-    var on = !!likes[ev.id];
-    el.innerHTML = "<img alt=\"\" /><div><h4></h4><div class=\"meta\"></div><div class=\"price\"></div></div><button class=\"like\" type=\"button\"></button>";
-    var img = el.querySelector("img");
-    img.src = ev.image; bindImg(img);
-    el.querySelector("h4").textContent = ev.name;
-    el.querySelector(".meta").textContent = ev.day + " " + ev.time + " \u00b7 " + ev.city;
-    el.querySelector(".price").textContent = ev.price + " \u00b7 " + ev.capacity;
-    var btn = el.querySelector(".like");
-    if (on) btn.classList.add("on");
-    btn.textContent = heart(on);
-    img.addEventListener("click", function () { openSheet(ev); });
-    el.querySelector("h4").addEventListener("click", function () { openSheet(ev); });
-    btn.addEventListener("click", function (e) {
-      e.stopPropagation();
-      likes[ev.id] = !likes[ev.id];
-      saveLikes(likes);
-      btn.classList.toggle("on", likes[ev.id]);
-      btn.textContent = heart(!!likes[ev.id]);
+  } else {
+    var groups = {};
+    data.events.forEach(function (ev) {
+      var k = dayKey(ev);
+      if (!groups[k]) groups[k] = [];
+      groups[k].push(ev);
     });
-    feed.appendChild(el);
-  });
+    DAY_ORDER.forEach(function (day) {
+      var list = groups[day];
+      if (!list || !list.length) return;
+      list.sort(timeSort);
+      var h = document.createElement("div");
+      h.className = "day-rail";
+      h.textContent = day.toUpperCase();
+      feed.appendChild(h);
+      list.forEach(function (ev) { feed.appendChild(makeCard(ev, likes, openSheet)); });
+    });
+  }
   var gallery = document.getElementById("gallery");
   gallery.innerHTML = "";
   if (!data.gallery.length) {
