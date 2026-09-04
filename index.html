@@ -39,10 +39,8 @@
         <h2 id="billTitle">IN THE BAY</h2>
         <p class="byline">A SHORT FILM BY WELLNESS TV</p>
       </div>
-      <div class="mini-map">
-        <div id="map"></div>
-      </div>
     </div>
+    <aside class="film film-end" id="stripEnd" aria-label="Film strip"></aside>
     <aside class="log" id="credits"></aside>
   </section>
 
@@ -95,6 +93,10 @@
     </div>
   </div>
 
+  <div class="mini-map" hidden>
+    <div id="map"></div>
+  </div>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="./data.js"></script>
   <script src="./sim.js"></script>
@@ -104,6 +106,5 @@
   <script src="./app.js"></script>
   <script src="./social.js"></script>
   <script src="./player.js"></script>
-  <script src="./mapfix.js"></script>
 </body>
 </html>
