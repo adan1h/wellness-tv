@@ -10,18 +10,19 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="./styles.css" />
   <link rel="stylesheet" href="./social.css" />
+  <link rel="stylesheet" href="./layout.css" />
 </head>
 <body>
   <header class="mast">
     <div class="brand">Wellness TV</div>
     <div class="mast-right">
-      <div class="ep-tag" id="epTag">Episode</div>
+      <div class="ep-tag" id="epTag">LIVE GUIDE</div>
       <button class="id-btn" id="idBtn" type="button">Sign in</button>
     </div>
   </header>
-  <p class="scene" id="scene"></p>
 
   <section class="theatre">
+    <aside class="film" id="strip" aria-label="Film strip"></aside>
     <div class="stage">
       <div class="frame">
         <img id="heroImg" alt="" />
@@ -33,26 +34,30 @@
           <p id="heroSub">The first shoot fills this frame.</p>
         </div>
       </div>
+      <div class="bill">
+        <p class="ep-line" id="epLine">WELLNESS TV · EPISODE</p>
+        <h2 id="billTitle">IN THE BAY</h2>
+        <p class="byline">A SHORT FILM BY WELLNESS TV</p>
+      </div>
     </div>
-    <aside class="credits" id="credits"></aside>
+    <aside class="log" id="credits"></aside>
   </section>
 
   <nav class="watch" id="watch" aria-label="Watch windows"></nav>
 
-  <section class="clips">
-    <h3>CLIPS · 16:9 / 9:16 / X</h3>
-    <div class="strip" id="strip" aria-label="Episode clips"></div>
+  <section class="wall" id="stillsSection">
+    <h3>CHANNEL WALL</h3>
+    <div class="wall-row" id="stills"></div>
   </section>
 
-  <section class="stills hidden" id="stillsSection">
-    <h3>STILLS FROM THE SESSION</h3>
-    <div class="stills-row" id="stills"></div>
-  </section>
   <nav class="chips" id="chips"></nav>
 
   <main class="board">
     <section class="guide">
-      <h3 id="guideTitle">THIS WEEK</h3>
+      <div class="guide-bar">
+        <h3 id="guideTitle">SESSIONS</h3>
+        <span class="view-all">TODAY</span>
+      </div>
       <div id="feed"></div>
     </section>
     <aside class="side">
@@ -63,11 +68,11 @@
 
   <section class="floor" id="floorSection">
     <h3>FROM THE FLOOR</h3>
-    <p class="floor-note">Posts on Instagram, X or TikTok that tag Wellness TV. We do not host a chat. We put the mention on the channel.</p>
+    <p class="floor-note">Posts on Instagram, X or TikTok that tag Wellness TV.</p>
     <div class="floor-row" id="floor"></div>
   </section>
 
-  <p class="legal">Thin identity is for first-party data. No public profile. No chat. <a href="./admin.html">Publisher</a></p>
+  <p class="legal">Wellness TV · St. Pete / Tampa Bay. <a href="./admin.html">Publisher</a></p>
 
   <div class="sheet" id="sheet">
     <div class="sheet-card">
@@ -84,7 +89,7 @@
     <div class="sheet-card">
       <button class="close" id="closeId" type="button">x</button>
       <h3>Sign in</h3>
-      <p>Google or Apple. We keep email and city so the board can learn who actually shows up. No public profile. No chat. No followers.</p>
+      <p>Google or Apple. No public profile. No chat.</p>
       <button class="id-go" id="idGoogle" type="button">Continue with Google</button>
       <button class="id-go" id="idApple" type="button">Continue with Apple</button>
       <button class="id-out hidden" id="idOut" type="button">Sign out</button>
