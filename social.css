@@ -5,15 +5,11 @@
 }
 .id-btn.on { border-color: var(--gold); color: var(--gold); }
 .ep-tag {
-  border: 1px solid var(--gold);
-  padding: 5px 9px;
-  letter-spacing: .18em;
   font-size: 10px;
+  letter-spacing: .2em;
+  color: var(--gold);
 }
-.scene {
-  max-width: 1240px; margin: 0 auto; padding: 0 20px 10px;
-  font-size: 10px; letter-spacing: .18em; color: var(--muted);
-}
+.scene { display: none !important; }
 .card.now h4 { color: var(--gold); }
 .card.now { box-shadow: inset 3px 0 0 var(--gold); }
 .card.past { opacity: .55; }
@@ -38,64 +34,49 @@
 }
 .theatre { grid-template-columns: 1fr; }
 @media (min-width: 960px) {
-  .theatre { grid-template-columns: 1fr 260px; }
+  .theatre { grid-template-columns: 1fr 280px; align-items: stretch; }
 }
 .credits {
-  background: #0c0d10;
-  border: 1px solid var(--line);
-  padding: 16px 14px 10px;
-  margin-top: 0;
+  background: transparent;
+  border: 0;
+  padding: 0;
 }
 .credits h4 {
-  margin-bottom: 14px;
-  letter-spacing: 0;
-}
-.credits h4 em {
-  display: block;
-  font-style: normal;
-  font-size: 9px;
-  letter-spacing: .22em;
-  color: var(--gold);
-  margin-bottom: 4px;
-  font-family: Inter, system-ui, sans-serif;
-}
-.credits h4 strong {
-  display: block;
   font-family: "Instrument Serif", Georgia, serif;
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 400;
+  letter-spacing: 0;
   color: var(--cream);
+  margin-bottom: 12px;
 }
 .cr {
-  display: grid;
-  grid-template-columns: 58px 40px 1fr;
-  gap: 8px;
-  align-items: start;
-  margin-bottom: 12px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--line);
+  display: block;
+  margin-bottom: 10px;
+  padding: 12px 12px 11px;
+  border: 1px solid var(--line);
+  background: #0c0d10;
+  cursor: pointer;
 }
 .cr b {
+  display: block;
   font-size: 11px;
-  letter-spacing: .04em;
-  font-weight: 600;
-  color: var(--cream);
-}
-.cr .flag {
-  font-style: normal;
-  font-size: 8px;
   letter-spacing: .12em;
-  color: var(--muted);
-  padding-top: 2px;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 4px;
 }
 .cr span {
-  font-size: 12px;
-  color: var(--muted);
-  line-height: 1.3;
+  display: block;
+  font-size: 15px;
+  line-height: 1.25;
+  color: var(--cream);
+  font-family: "Instrument Serif", Georgia, serif;
 }
-.cr.is-now .flag { color: #07080a; background: var(--gold); padding: 2px 4px; }
-.cr.is-now span { color: var(--cream); }
-.cr.is-past { opacity: .55; }
+.cr.done { opacity: .55; }
+.cr.live {
+  border-color: var(--gold);
+}
+.cr.live b { color: #07080a; background: var(--gold); display: inline-block; padding: 2px 6px; margin-bottom: 8px; }
 .frame { position: relative; overflow: hidden; background: #000; }
 .frame img { animation: ken 22s ease-in-out infinite alternate; }
 #heroPlayer {
