@@ -9,6 +9,10 @@ function weekEnd(start) {
   x.setDate(x.getDate() + 7);
   return x;
 }
+function weekKeyNow() {
+  var x = weekStart(new Date());
+  return x.getFullYear() + "-" + (x.getMonth() + 1) + "-" + x.getDate();
+}
 function weekdayIndex(name) {
   var n = String(name || "").toLowerCase();
   if (n.indexOf("sun") === 0) return 0;
@@ -37,7 +41,9 @@ function inThisWeek(date, start, end) {
 }
 function eventThisWeek(ev) {
   if (!ev) return false;
-  if (String(ev.id || "").indexOf("PUB-") === 0) return true;
+  if (String(ev.id || "").indexOf("PUB-") === 0) {
+    return ev.week === weekKeyNow();
+  }
   var rule = String(ev.rule || "").toLowerCase();
   var start = weekStart(new Date());
   var end = weekEnd(start);
@@ -60,3 +66,4 @@ function eventThisWeek(ev) {
   return true;
 }
 window.eventThisWeek = eventThisWeek;
+window.weekKeyNow = weekKeyNow;
