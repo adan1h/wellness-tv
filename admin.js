@@ -1,5 +1,6 @@
 const KEY = "wtv-published-v1";
 const AIR = "wtv-broadcast-v1";
+const NOTE = "wtv-announce-v1";
 const GATE = "wtv-pub-ok";
 const PUB_KEY = "tbay2026";
 function gated() { return sessionStorage.getItem(GATE) === "1"; }
@@ -26,27 +27,50 @@ function load() {
   catch (e) { return []; }
 }
 function save(rows) { localStorage.setItem(KEY, JSON.stringify(rows)); }
+function loadNotes() {
+  try { return JSON.parse(localStorage.getItem(NOTE) || "[]"); }
+  catch (e) { return []; }
+}
+function saveNotes(rows) { localStorage.setItem(NOTE, JSON.stringify(rows)); }
 function loadAir() {
   try { return JSON.parse(localStorage.getItem(AIR) || "null"); }
   catch (e) { return null; }
 }
 function render() {
   var list = document.getElementById("list");
-  if (!list) return;
-  var rows = load();
-  list.innerHTML = rows.length ? "" : "<p class='note'>No extra sessions on this device.</p>";
-  rows.forEach(function (r, i) {
-    var div = document.createElement("div");
-    div.className = "item";
-    div.innerHTML = "<span></span>";
-    div.querySelector("span").textContent = r.name + " · " + r.day + " " + r.time;
-    var btn = document.createElement("button");
-    btn.className = "del";
-    btn.textContent = "Remove";
-    btn.onclick = function () { save(load().filter(function (_, j) { return j !== i; })); render(); };
-    div.appendChild(btn);
-    list.appendChild(div);
-  });
+  if (list) {
+    var rows = load();
+    list.innerHTML = rows.length ? "" : "<p class='note'>No extra sessions on this device.</p>";
+    rows.forEach(function (r, i) {
+      var div = document.createElement("div");
+      div.className = "item";
+      div.innerHTML = "<span></span>";
+      div.querySelector("span").textContent = r.name + " · " + r.day + " " + r.time;
+      var btn = document.createElement("button");
+      btn.className = "del";
+      btn.textContent = "Remove";
+      btn.onclick = function () { save(load().filter(function (_, j) { return j !== i; })); render(); };
+      div.appendChild(btn);
+      list.appendChild(div);
+    });
+  }
+  var notices = document.getElementById("notices");
+  if (notices) {
+    var ads = loadNotes();
+    notices.innerHTML = ads.length ? "" : "<p class='note'>No extra notices on this device.</p>";
+    ads.forEach(function (r, i) {
+      var div = document.createElement("div");
+      div.className = "item";
+      div.innerHTML = "<span></span>";
+      div.querySelector("span").textContent = (r.kicker || "NOTICE") + " · " + r.title;
+      var btn = document.createElement("button");
+      btn.className = "del";
+      btn.textContent = "Remove";
+      btn.onclick = function () { saveNotes(loadNotes().filter(function (_, j) { return j !== i; })); render(); };
+      div.appendChild(btn);
+      notices.appendChild(div);
+    });
+  }
   var air = loadAir();
   var form = document.getElementById("air");
   if (air && form) {
@@ -69,6 +93,22 @@ function render() {
 if (!askGate()) {
   /* stop */
 } else {
+  var notice = document.getElementById("notice");
+  if (notice) notice.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var f = e.target;
+    var ads = loadNotes();
+    ads.unshift({
+      id: "AD-" + Date.now(),
+      kicker: f.kicker.value.trim() || "NOTICE",
+      title: f.title.value.trim(),
+      line: f.line.value.trim(),
+      url: f.url.value.trim()
+    });
+    saveNotes(ads);
+    f.reset();
+    render();
+  });
   document.getElementById("air").addEventListener("submit", function (e) {
     e.preventDefault();
     var f = e.target;
