@@ -4,6 +4,7 @@
 .side { display: none !important; }
 .board, .chips { display: none !important; }
 .mini-map, #map { display: none !important; }
+.wall, .floor { display: none !important; }
 
 .theatre {
   max-width: 1240px;
@@ -128,14 +129,6 @@
   background: transparent; color: #d4b36a; border-radius: 50%; cursor: pointer;
 }
 .log .cr .like.on { border-color: #d4b36a; }
-
-.wall { max-width: 1240px; margin: 0 auto; padding: 8px 16px 4px; }
-.wall h3 { font-size: 10px; letter-spacing: .2em; color: #8a8376; margin-bottom: 10px; }
-.wall-row, .stills-row { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
-.wall-row img, .stills-row img {
-  width: 148px; height: 96px; border-radius: 6px; flex: 0 0 auto; object-fit: cover; border: 0;
-}
-@media (min-width: 960px) { .wall { display: none; } }
 
 .frame.on-air { height: min(56vh, 520px); min-height: 240px; }
 .frame.on-air #heroImg,
