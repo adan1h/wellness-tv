@@ -22,7 +22,16 @@
   <header class="top" style="padding:16px;">
     <div class="brand">Publisher</div>
   </header>
-  <p class="note">Sunday lock lives here for now. Notices and extra sessions stay on this device until the cloud CMS exists. Live URLs can wait.</p>
+  <p class="note">CMS slice 1. Weekly catalog is the season. Occasional + SERIES belong to this Sunday lock. Live URLs wait for channels.</p>
+
+  <div class="box">
+    <h2 style="font-size:15px;margin-bottom:8px;">Weekly catalog</h2>
+    <div id="catalogWeek"></div>
+  </div>
+  <div class="box">
+    <h2 style="font-size:15px;margin-bottom:8px;">Occasional this week</h2>
+    <div id="catalogOcc"></div>
+  </div>
 
   <form class="box" id="notice">
     <label>WEEK NOTICE</label>
@@ -40,8 +49,35 @@
     <div id="notices"></div>
   </div>
 
+  <form class="box" id="form">
+    <label>ONE-WEEK SESSION</label>
+    <input name="name" required placeholder="Club or session name" />
+    <div class="row">
+      <div><label>DAY</label><input name="day" required placeholder="Wednesday" /></div>
+      <div><label>TIME</label><input name="time" required placeholder="6:30 PM" /></div>
+    </div>
+    <label>RECURRING RULE</label><input name="rule" placeholder="This week only" />
+    <label>VENUE</label><input name="venue" required />
+    <label>ADDRESS</label><input name="address" placeholder="Can stay loose for now" />
+    <div class="row">
+      <div><label>CITY</label><select name="city"><option>St. Petersburg</option><option>Tampa</option></select></div>
+      <div><label>PRICE</label><input name="price" value="Free" /></div>
+    </div>
+    <label>CAPACITY / NOTE</label><input name="capacity" placeholder="All paces" />
+    <label>INSTAGRAM OR SITE</label><input name="instagram" placeholder="https://" />
+    <div class="row">
+      <div><label>LAT</label><input name="lat" value="27.77" /></div>
+      <div><label>LNG</label><input name="lng" value="-82.64" /></div>
+    </div>
+    <button class="publish" type="submit">Add for this week only</button>
+  </form>
+  <div class="box">
+    <h2 style="font-size:15px;margin-bottom:8px;">Sessions on this device</h2>
+    <div id="list"></div>
+  </div>
+
   <form class="box" id="air">
-    <label>CHANNEL STATUS</label>
+    <label>CHANNEL STATUS — later</label>
     <select name="status">
       <option value="idle">Idle / dark</option>
       <option value="next">NEXT LIVE</option>
@@ -67,31 +103,9 @@
     <button class="publish" type="submit">Put on the channel</button>
   </form>
 
-  <form class="box" id="form">
-    <label>NAME</label><input name="name" required placeholder="Club or session name" />
-    <div class="row">
-      <div><label>DAY</label><input name="day" required placeholder="Wednesday" /></div>
-      <div><label>TIME</label><input name="time" required placeholder="6:30 PM" /></div>
-    </div>
-    <label>RECURRING RULE</label><input name="rule" placeholder="Every Wednesday" />
-    <label>VENUE</label><input name="venue" required />
-    <label>ADDRESS</label><input name="address" placeholder="Can stay loose for now" />
-    <div class="row">
-      <div><label>CITY</label><select name="city"><option>St. Petersburg</option><option>Tampa</option></select></div>
-      <div><label>PRICE</label><input name="price" value="Free" /></div>
-    </div>
-    <label>CAPACITY / NOTE</label><input name="capacity" placeholder="All paces" />
-    <label>INSTAGRAM OR SITE</label><input name="instagram" placeholder="https://" />
-    <div class="row">
-      <div><label>LAT</label><input name="lat" value="27.77" /></div>
-      <div><label>LNG</label><input name="lng" value="-82.64" /></div>
-    </div>
-    <button class="publish" type="submit">Add session on this device</button>
-  </form>
-  <div class="box">
-    <h2 style="font-size:15px;margin-bottom:8px;">Sessions on this device</h2>
-    <div id="list"></div>
-  </div>
+  <script src="./data.js"></script>
+  <script src="./week.js"></script>
   <script src="./admin.js"></script>
+  <script src="./catalog.js"></script>
 </body>
 </html>
