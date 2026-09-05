@@ -12,6 +12,27 @@ window.SEED = {
       title: "HYROX Tampa 2026",
       line: "Oct 22\u201325 \u00b7 Tampa Convention Center \u00b7 official tickets",
       url: "https://hyrox.com/event/hyrox-tampa/"
+    },
+    {
+      id: "WTV-A02",
+      kicker: "SERIES",
+      title: "Cold Tub Coffee Club",
+      line: "Ticketed plunge + coffee \u00b7 rotating St. Pete pins \u00b7 check this week",
+      url: "https://www.instagram.com/coldtubcoffeeclub/"
+    },
+    {
+      id: "WTV-A03",
+      kicker: "SERIES",
+      title: "The Club Tampa Bay",
+      line: "Workout + plunge + sauna festivals \u00b7 Pier and Bay dates",
+      url: "https://www.instagram.com/theclubtampabay/"
+    },
+    {
+      id: "WTV-A04",
+      kicker: "SERIES",
+      title: "AltSocial Tampa",
+      line: "Sober daytime wellness \u00b7 Armature Works dates",
+      url: "https://www.instagram.com/altsocialtampabay/"
     }
   ],
   events: [
@@ -42,13 +63,18 @@ window.SEED = {
     { id: "WTV-050", name: "Badass Lady Gang Tampa Bay", day: "Saturday", time: "8:00 AM", rule: "Every Saturday \u00b7 3rd Sat elsewhere", venue: "Armature Works", address: "Between Steelbach and Urban Kai", city: "Tampa", price: "Free", capacity: "Women", instagram: "https://www.instagram.com/badassladygangtpa/", lat: 27.9606, lng: -82.4641, image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=900&q=80" },
     { id: "WTV-015", name: "Yoga in the Park \u2014 Get Fit", day: "Saturday", time: "8:00 AM", rule: "First Saturday \u00b7 8am May-Sep / 9am Oct-Apr", venue: "Crescent Lake Park", address: "NE corner near 22nd Ave N & 5th St N", city: "St. Petersburg", price: "Free", capacity: "Bring a mat", instagram: "https://www.instagram.com/thebodyelectricyoga/", lat: 27.7888, lng: -82.6401, image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=900&q=80" },
     { id: "WTV-051", name: "Get Fit Trail Run — Boyd Hill", day: "Saturday", time: "9:00 AM", rule: "Second Saturday", venue: "Boyd Hill Nature Preserve", address: "Flagpole, Lake Maggiore Education Center", city: "St. Petersburg", price: "Free", capacity: "Trail", instagram: "https://www.instagram.com/getfitstpete/", lat: 27.73, lng: -82.67, image: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=900&q=80" },
+    { id: "WTV-054", name: "Plunsana Plunge & Party", day: "Saturday", time: "6:30 PM", rule: "Monthly \u00b7 confirm date on site", venue: "Plunsana", address: "2300 26th St N, Suite B, St. Petersburg", city: "St. Petersburg", price: "Paid social", capacity: "Studio cap", instagram: "https://www.instagram.com/plun_sana/", lat: 27.7925, lng: -82.6628, image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=900&q=80" },
     { id: "WTV-052", name: "Run The Heights", day: "Sunday", time: "8:00 AM", rule: "Every Sunday \u00b7 long run", venue: "Stones Throw", address: "304 W 7th Ave, Tampa", city: "Tampa", price: "Free", capacity: "All paces", instagram: "https://www.instagram.com/runtheheightstampa/", lat: 27.9615, lng: -82.4635, image: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=900&q=80" },
-    { id: "WTV-053", name: "Plunsana Self-Care Sunday", day: "Sunday", time: "9:30 AM", rule: "Weekly \u00b7 confirm on site", venue: "Plunsana", address: "2300 26th St N, Suite B, St. Petersburg", city: "St. Petersburg", price: "Paid", capacity: "Studio cap", instagram: "https://www.instagram.com/plun_sana/", lat: 27.7925, lng: -82.6628, image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=900&q=80" }
+    { id: "WTV-053", name: "Plunsana Self-Care Sunday", day: "Sunday", time: "9:30 AM", rule: "Weekly \u00b7 confirm on site", venue: "Plunsana", address: "2300 26th St N, Suite B, St. Petersburg", city: "St. Petersburg", price: "Paid", capacity: "Studio cap", instagram: "https://www.instagram.com/plun_sana/", lat: 27.7925, lng: -82.6628, image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=900&q=80" },
+    { id: "WTV-055", name: "Plunsana RITUAL", day: "Sunday", time: "9:30 AM", rule: "Monthly \u00b7 guided then open floor", venue: "Plunsana", address: "2300 26th St N, Suite B, St. Petersburg", city: "St. Petersburg", price: "Paid", capacity: "Studio cap", instagram: "https://www.instagram.com/plun_sana/", lat: 27.7925, lng: -82.6628, image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=900&q=80" }
   ],
   gallery: []
 };
 
 window.DRAFT_EVENTS = [
   { id: "WTV-D01", name: "St. Pete Girls Who Walk", day: "Sunday", time: "10:00 AM", rule: "Confirm monthly IG calendar", venue: "Rotating", address: "See Instagram", city: "St. Petersburg", price: "Free", capacity: "Walk", instagram: "https://www.instagram.com/stpetegirlswhowalk/" },
-  { id: "WTV-D02", name: "Run Club for MFs That Don\u2019t Run", day: "Wednesday", time: "", rule: "Typical Wednesday \u00b7 pin on IG", venue: "Rotating Tampa", address: "See Instagram", city: "Tampa", price: "Free", capacity: "Social", instagram: "https://www.instagram.com/runclub4mfsthatdontrun/" }
+  { id: "WTV-D02", name: "Run Club for MFs That Don\u2019t Run", day: "Wednesday", time: "", rule: "Typical Wednesday \u00b7 pin on IG", venue: "Rotating Tampa", address: "See Instagram", city: "Tampa", price: "Free", capacity: "Social", instagram: "https://www.instagram.com/runclub4mfsthatdontrun/" },
+  { id: "WTV-D03", name: "Nordic Spa Klub", day: "", time: "Hours on site", rule: "Day pass \u2014 not a single weekly ritual", venue: "502 28th St S", address: "Warehouse Arts, St. Petersburg", city: "St. Petersburg", price: "Paid", capacity: "Klub", instagram: "https://www.instagram.com/nordicspaklub/" },
+  { id: "WTV-D04", name: "Kodawari Studios", day: "", time: "Per event", rule: "Ticketed Magic Hour / community days", venue: "3965 Henderson Blvd Ste C", address: "Tampa", city: "Tampa", price: "Paid", capacity: "Studio", instagram: "https://www.instagram.com/kodawaristudios/" },
+  { id: "WTV-D05", name: "Hot Box Cold Plunge", day: "", time: "Per event", rule: "Themed nights on site calendar", venue: "Hot Box Tampa", address: "Tampa", city: "Tampa", price: "Paid", capacity: "Studio", instagram: "https://www.instagram.com/hotboxcoldplunge/" }
 ];
