@@ -2,7 +2,7 @@ function allEvents() {
   var extra = [];
   try { extra = JSON.parse(localStorage.getItem("wtv-published-v1") || "[]"); } catch (e) {}
   return extra.concat((window.SEED && window.SEED.events) || []).filter(function (ev) {
-    return window.eventThisWeek ? window.eventThisWeek(ev) : false;
+    return window.eventThisWeek ? window.eventThisWeek(ev) : /every\s+(mon|tue|wed|thu|fri|sat|sun)/i.test(String(ev.rule || ""));
   });
 }
 function evDayName(ev) {
@@ -15,13 +15,6 @@ function evDayName(ev) {
   if (d.indexOf("sat") === 0) return "Saturday";
   if (d.indexOf("sun") === 0) return "Sunday";
   return "";
-}
-function daysLeftThisWeek() {
-  var names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  var d = new Date().getDay();
-  var out = [];
-  for (var i = d + 1; i <= 6; i++) out.push(names[i]);
-  return out;
 }
 function loadLikesSoon() {
   try { return JSON.parse(localStorage.getItem("wtv-likes-v1") || "{}"); }
@@ -63,14 +56,17 @@ function makeSessionRow(ev, likes) {
 function paintSoon() {
   var root = document.getElementById("soon");
   if (!root) return;
+  var order = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  var today = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][new Date().getDay()];
+  var start = order.indexOf(today);
   var events = allEvents();
   var likes = loadLikesSoon();
-  var days = daysLeftThisWeek();
   root.innerHTML = "<h3>COMING UP</h3>";
   var shown = 0;
-  days.forEach(function (day) {
+  for (var i = 1; i <= 6; i++) {
+    var day = order[(start + i) % 7];
     var list = events.filter(function (ev) { return evDayName(ev) === day; });
-    if (!list.length) return;
+    if (!list.length) continue;
     shown += 1;
     var wrap = document.createElement("details");
     wrap.className = "soon-day";
@@ -82,11 +78,11 @@ function paintSoon() {
     list.forEach(function (ev) { box.appendChild(makeSessionRow(ev, likes)); });
     wrap.appendChild(box);
     root.appendChild(wrap);
-  });
+  }
   if (!shown) {
     var empty = document.createElement("p");
     empty.className = "soon-row";
-    empty.textContent = "Week is closed after today.";
+    empty.textContent = "No weekly sessions past today.";
     root.appendChild(empty);
   }
 }
