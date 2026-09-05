@@ -2,7 +2,6 @@
 .clips { display: none !important; }
 .orbit { display: none !important; }
 .side { display: none !important; }
-.mini-map, #map { display: none !important; }
 .board, .chips { display: none !important; }
 
 .theatre {
@@ -15,15 +14,8 @@
 @media (min-width: 960px) {
   .theatre {
     grid-template-columns: 108px minmax(0, 1fr) 108px;
-    grid-template-areas:
-      "film stage film2"
-      "today today today";
     align-items: start;
   }
-  .film { grid-area: film; }
-  .film-end { grid-area: film2; }
-  .stage { grid-area: stage; }
-  .log { grid-area: today; }
 }
 
 .stage { display: flex; flex-direction: column; }
@@ -71,12 +63,7 @@
 }
 
 .stage .watch {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 10px 0 0;
-  margin: 0;
-  max-width: none;
+  display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 0 0; margin: 0; max-width: none;
 }
 
 .bill { display: block; text-align: center; padding: 20px 8px 8px; }
@@ -88,13 +75,36 @@
 }
 .byline { font-size: 10px; letter-spacing: .16em; color: #8a8376; }
 
-.log {
+.day-row {
+  max-width: 1240px;
+  margin: 8px auto 24px;
+  padding: 0 16px;
+  display: grid;
+  gap: 24px;
+}
+@media (min-width: 900px) {
+  .day-row {
+    grid-template-columns: 300px minmax(0, 1fr);
+    align-items: start;
+  }
+}
+.mini-map {
   display: block;
   width: 100%;
-  max-width: 760px;
-  margin: 8px auto 20px;
-  padding: 18px 16px 8px;
-  border-top: 1px solid #2a2c32;
+  max-width: 300px;
+  aspect-ratio: 1 / 1;
+  border: 1px solid #2a2c32;
+}
+.mini-map #map {
+  display: block !important;
+  width: 100%;
+  height: 300px !important;
+}
+.day-col .log {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  max-width: none;
 }
 .log h4 {
   font-size: 11px;

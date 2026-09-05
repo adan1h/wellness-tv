@@ -1,7 +1,7 @@
 .soon {
-  max-width: 760px;
-  margin: 0 auto 28px;
-  padding: 0 16px;
+  max-width: none;
+  margin: 18px 0 0;
+  padding: 0;
 }
 .soon h3 {
   font-size: 11px;
@@ -9,9 +9,7 @@
   color: #8a8376;
   margin-bottom: 10px;
 }
-.soon-day {
-  border-bottom: 1px solid #2a2c32;
-}
+.soon-day { border-bottom: 1px solid #2a2c32; }
 .soon-day summary {
   list-style: none;
   cursor: pointer;
@@ -27,15 +25,4 @@
   color: #d4b36a;
 }
 .soon-day[open] summary::after { content: "\2013"; }
-.soon .log {
-  border: 0;
-  margin: 0;
-  padding: 0 0 8px;
-  max-width: none;
-}
-.soon-row {
-  margin: 0;
-  padding: 0 0 10px;
-  font-size: 14px;
-  color: #8a8376;
-}
+.soon .log { border: 0; margin: 0; padding: 0 0 8px; max-width: none; }
