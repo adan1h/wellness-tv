@@ -2,7 +2,7 @@ function allEvents() {
   var extra = [];
   try { extra = JSON.parse(localStorage.getItem("wtv-published-v1") || "[]"); } catch (e) {}
   return extra.concat((window.SEED && window.SEED.events) || []).filter(function (ev) {
-    return !window.eventThisWeek || window.eventThisWeek(ev);
+    return window.eventThisWeek ? window.eventThisWeek(ev) : false;
   });
 }
 function evDayName(ev) {
@@ -15,6 +15,13 @@ function evDayName(ev) {
   if (d.indexOf("sat") === 0) return "Saturday";
   if (d.indexOf("sun") === 0) return "Sunday";
   return "";
+}
+function daysLeftThisWeek() {
+  var names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  var d = new Date().getDay();
+  var out = [];
+  for (var i = d + 1; i <= 6; i++) out.push(names[i]);
+  return out;
 }
 function loadLikesSoon() {
   try { return JSON.parse(localStorage.getItem("wtv-likes-v1") || "{}"); }
@@ -56,17 +63,14 @@ function makeSessionRow(ev, likes) {
 function paintSoon() {
   var root = document.getElementById("soon");
   if (!root) return;
-  var order = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-  var today = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][new Date().getDay()];
-  var start = order.indexOf(today);
   var events = allEvents();
   var likes = loadLikesSoon();
+  var days = daysLeftThisWeek();
   root.innerHTML = "<h3>COMING UP</h3>";
   var shown = 0;
-  for (var i = 1; i <= 6; i++) {
-    var day = order[(start + i) % 7];
+  days.forEach(function (day) {
     var list = events.filter(function (ev) { return evDayName(ev) === day; });
-    if (!list.length) continue;
+    if (!list.length) return;
     shown += 1;
     var wrap = document.createElement("details");
     wrap.className = "soon-day";
@@ -78,11 +82,11 @@ function paintSoon() {
     list.forEach(function (ev) { box.appendChild(makeSessionRow(ev, likes)); });
     wrap.appendChild(box);
     root.appendChild(wrap);
-  }
+  });
   if (!shown) {
     var empty = document.createElement("p");
     empty.className = "soon-row";
-    empty.textContent = "No sessions locked past today.";
+    empty.textContent = "Week is closed after today.";
     root.appendChild(empty);
   }
 }
