@@ -13,6 +13,24 @@ function weekKeyNow() {
   var x = weekStart(new Date());
   return x.getFullYear() + "-" + (x.getMonth() + 1) + "-" + x.getDate();
 }
+function offIdsThisWeek() {
+  try {
+    var map = JSON.parse(localStorage.getItem("wtv-off-v1") || "{}");
+    return map[weekKeyNow()] || [];
+  } catch (e) {
+    return [];
+  }
+}
+function setOffThisWeek(id, off) {
+  var key = weekKeyNow();
+  var map = {};
+  try { map = JSON.parse(localStorage.getItem("wtv-off-v1") || "{}"); } catch (e) { map = {}; }
+  var list = map[key] || [];
+  list = list.filter(function (x) { return x !== id; });
+  if (off) list.push(id);
+  map[key] = list;
+  localStorage.setItem("wtv-off-v1", JSON.stringify(map));
+}
 function weekdayIndex(name) {
   var n = String(name || "").toLowerCase();
   if (n.indexOf("sun") === 0) return 0;
@@ -41,6 +59,7 @@ function inThisWeek(date, start, end) {
 }
 function eventThisWeek(ev) {
   if (!ev) return false;
+  if (offIdsThisWeek().indexOf(ev.id) >= 0) return false;
   if (String(ev.id || "").indexOf("PUB-") === 0) {
     return ev.week === weekKeyNow();
   }
@@ -67,3 +86,5 @@ function eventThisWeek(ev) {
 }
 window.eventThisWeek = eventThisWeek;
 window.weekKeyNow = weekKeyNow;
+window.offIdsThisWeek = offIdsThisWeek;
+window.setOffThisWeek = setOffThisWeek;

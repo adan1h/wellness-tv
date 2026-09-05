@@ -7,12 +7,23 @@ function paintCatalog() {
   var occ = document.getElementById("catalogOcc");
   if (!week || !window.SEED) return;
   var events = window.SEED.events || [];
+  var off = window.offIdsThisWeek ? window.offIdsThisWeek() : [];
   week.innerHTML = "";
   events.filter(isWeekly).forEach(function (ev) {
     var div = document.createElement("div");
     div.className = "item";
-    div.innerHTML = "<span></span>";
-    div.querySelector("span").textContent = ev.day + " " + ev.time + " · " + ev.name;
+    var span = document.createElement("span");
+    var dark = off.indexOf(ev.id) >= 0;
+    span.textContent = (dark ? "OFF · " : "") + ev.day + " " + ev.time + " · " + ev.name;
+    var btn = document.createElement("button");
+    btn.className = "del";
+    btn.textContent = dark ? "Restore" : "Off this week";
+    btn.onclick = function () {
+      window.setOffThisWeek(ev.id, !dark);
+      paintCatalog();
+    };
+    div.appendChild(span);
+    div.appendChild(btn);
     week.appendChild(div);
   });
   if (occ) {
@@ -27,8 +38,17 @@ function paintCatalog() {
     list.forEach(function (ev) {
       var div = document.createElement("div");
       div.className = "item";
-      div.innerHTML = "<span></span>";
-      div.querySelector("span").textContent = ev.day + " " + ev.time + " · " + ev.name;
+      var span = document.createElement("span");
+      span.textContent = ev.day + " " + ev.time + " · " + ev.name;
+      var btn = document.createElement("button");
+      btn.className = "del";
+      btn.textContent = "Off this week";
+      btn.onclick = function () {
+        window.setOffThisWeek(ev.id, true);
+        paintCatalog();
+      };
+      div.appendChild(span);
+      div.appendChild(btn);
       occ.appendChild(div);
     });
   }
