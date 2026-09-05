@@ -22,12 +22,28 @@
   <header class="top" style="padding:16px;">
     <div class="brand">Publisher</div>
   </header>
-  <p class="note">This panel is Wellness TV only. Hours can stay loose for now. What the platform needs is the live switch.</p>
+  <p class="note">Sunday lock lives here for now. Notices and extra sessions stay on this device until the cloud CMS exists. Live URLs can wait.</p>
+
+  <form class="box" id="notice">
+    <label>WEEK NOTICE</label>
+    <input name="kicker" placeholder="SERIES / RACE WEEKEND / NOTICE" />
+    <label>TITLE</label>
+    <input name="title" required placeholder="Cold Tub Coffee Club" />
+    <label>LINE</label>
+    <input name="line" placeholder="Sat 10am · pin on IG this week" />
+    <label>LINK</label>
+    <input name="url" placeholder="https://" />
+    <button class="publish" type="submit">Post notice this week</button>
+  </form>
+  <div class="box">
+    <h2 style="font-size:15px;margin-bottom:8px;">Notices on this device</h2>
+    <div id="notices"></div>
+  </div>
 
   <form class="box" id="air">
     <label>CHANNEL STATUS</label>
     <select name="status">
-      <option value="idle">Idle / replay still</option>
+      <option value="idle">Idle / dark</option>
       <option value="next">NEXT LIVE</option>
       <option value="live">ON AIR</option>
       <option value="replay">REPLAY</option>
@@ -73,7 +89,7 @@
     <button class="publish" type="submit">Add session on this device</button>
   </form>
   <div class="box">
-    <h2 style="font-size:15px;margin-bottom:8px;">On this device</h2>
+    <h2 style="font-size:15px;margin-bottom:8px;">Sessions on this device</h2>
     <div id="list"></div>
   </div>
   <script src="./admin.js"></script>
