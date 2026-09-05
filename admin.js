@@ -141,6 +141,7 @@ if (!askGate()) {
     var rows = load();
     rows.unshift({
       id: "PUB-" + Date.now(),
+      week: weekKeyNow(),
       name: f.name.value.trim(),
       type: "Session",
       day: f.day.value.trim(),
