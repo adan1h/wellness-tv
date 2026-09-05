@@ -4,8 +4,8 @@
   "description": "Tampa Bay movement channel",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0D1B2A",
-  "theme_color": "#0D1B2A",
+  "background_color": "#07080a",
+  "theme_color": "#07080a",
   "lang": "en",
   "icons": [{ "src": "icon.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any" }]
 }
