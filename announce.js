@@ -1,7 +1,9 @@
 function paintAnnounce() {
   var box = document.getElementById("announce");
-  if (!box || !window.SEED) return;
-  var ads = window.SEED.announce || [];
+  if (!box) return;
+  var ads = [];
+  try { ads = ads.concat(JSON.parse(localStorage.getItem("wtv-announce-v1") || "[]")); } catch (e) {}
+  ads = ads.concat((window.SEED && window.SEED.announce) || []);
   box.innerHTML = "";
   ads.forEach(function (ad) {
     var a = document.createElement(ad.url ? "a" : "div");
