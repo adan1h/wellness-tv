@@ -104,7 +104,8 @@ function paintToday() {
   var extra = [];
   try { extra = JSON.parse(localStorage.getItem("wtv-published-v1") || "[]"); } catch (e) {}
   var list = extra.concat(window.SEED.events || []).filter(function (ev) {
-    return evDay(ev) === today;
+    if (evDay(ev) !== today) return false;
+    return !window.eventThisWeek || window.eventThisWeek(ev);
   });
   box.innerHTML = "<h4>TODAY</h4>";
   if (!list.length) {
