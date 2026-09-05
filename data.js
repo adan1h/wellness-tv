@@ -5,6 +5,15 @@ window.SEED = {
     image: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1600&q=80"
   },
   wall: [],
+  announce: [
+    {
+      id: "WTV-019",
+      kicker: "RACE WEEKEND",
+      title: "HYROX Tampa 2026",
+      line: "Oct 22\u201325 \u00b7 Tampa Convention Center \u00b7 official tickets",
+      url: "https://hyrox.com/event/hyrox-tampa/"
+    }
+  ],
   events: [
     { id: "WTV-026", name: "St. Pete Running & Coffee", day: "Tuesday", time: "7:00 AM", rule: "Every Tuesday", venue: "Coffee Pot Blvd area", address: "2601 Dr MLK Jr St N, St. Petersburg", city: "St. Petersburg", price: "Free", capacity: "All paces", instagram: "https://www.instagram.com/stpeterunningandcoffee/", lat: 27.7964, lng: -82.6404, image: "https://images.unsplash.com/photo-1486218119243-13883505764c?auto=format&fit=crop&w=900&q=80" },
     { id: "WTV-003", name: "St. Pete Running Co Community Run", day: "Monday", time: "6:30 PM", rule: "Every Monday", venue: "St. Pete Running Company", address: "6986 22nd Ave N, St. Petersburg", city: "St. Petersburg", price: "Free", capacity: "All paces", instagram: "https://stpeterunningco.com/group-runs/", lat: 27.7949, lng: -82.728, image: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=900&q=80" },
@@ -19,13 +28,11 @@ window.SEED = {
     { id: "WTV-039", name: "Plunsana Ladies Night", day: "Friday", time: "5:00 PM", rule: "Every Friday 5\u20138 PM", venue: "Plunsana", address: "2300 26th St N, Suite B, St. Petersburg", city: "St. Petersburg", price: "Paid social", capacity: "Studio cap", instagram: "https://www.instagram.com/plun_sana/", lat: 27.7925, lng: -82.6628, image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=900&q=80" },
     { id: "WTV-015", name: "Yoga in the Park \u2014 Get Fit", day: "Saturday", time: "8:00 AM", rule: "First Saturday \u00b7 8am May-Sep / 9am Oct-Apr", venue: "Crescent Lake Park", address: "NE corner near 22nd Ave N & 5th St N", city: "St. Petersburg", price: "Free", capacity: "Bring a mat", instagram: "https://www.instagram.com/thebodyelectricyoga/", lat: 27.7888, lng: -82.6401, image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=900&q=80" },
     { id: "WTV-006", name: "Weedon Island parkrun", day: "Saturday", time: "8:00 AM", rule: "Every Saturday \u00b7 register barcode first", venue: "Weedon Island Preserve", address: "1800 Weedon Dr NE, St. Petersburg", city: "St. Petersburg", price: "Free", capacity: "Walk / jog / run", instagram: "https://www.parkrun.us/weedonislandpreserve/", lat: 27.8483, lng: -82.6163, image: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=900&q=80" },
-    { id: "WTV-026B", name: "St. Pete Running & Coffee", day: "Saturday", time: "7:30 AM", rule: "Every Saturday", venue: "Coffee Pot Blvd area", address: "2601 Dr MLK Jr St N, St. Petersburg", city: "St. Petersburg", price: "Free", capacity: "All paces", instagram: "https://www.instagram.com/stpeterunningandcoffee/", lat: 27.7964, lng: -82.6404, image: "https://images.unsplash.com/photo-1486218119243-13883505764c?auto=format&fit=crop&w=900&q=80" },
-    { id: "WTV-019", name: "HYROX Tampa 2026", day: "Thu-Sun", time: "Oct 22-25", rule: "Race weekend \u00b7 official tickets", venue: "Tampa Convention Center", address: "333 S Franklin St, Tampa", city: "Tampa", price: "Official tickets", capacity: "Race cap", instagram: "https://hyrox.com/event/hyrox-tampa/", lat: 27.941, lng: -82.4563, image: "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=900&q=80" }
+    { id: "WTV-026B", name: "St. Pete Running & Coffee", day: "Saturday", time: "7:30 AM", rule: "Every Saturday", venue: "Coffee Pot Blvd area", address: "2601 Dr MLK Jr St N, St. Petersburg", city: "St. Petersburg", price: "Free", capacity: "All paces", instagram: "https://www.instagram.com/stpeterunningandcoffee/", lat: 27.7964, lng: -82.6404, image: "https://images.unsplash.com/photo-1486218119243-13883505764c?auto=format&fit=crop&w=900&q=80" }
   ],
   gallery: []
 };
 
-// Draft only. Status Verify. Do not render until Scout confirms.
 window.DRAFT_EVENTS = [
   { id: "WTV-001", name: "Matter of Fact Run Club", day: "Wednesday", time: "6:30 PM", rule: "Every Wednesday", venue: "Downtown St. Pete", address: "See Instagram this week", city: "St. Petersburg", price: "Free", capacity: "All paces", instagram: "https://www.instagram.com/mof_run_club/", lat: 27.7719, lng: -82.6382, image: "https://images.unsplash.com/photo-1461896836934-ffe607ba6851?auto=format&fit=crop&w=900&q=80" }
 ];
