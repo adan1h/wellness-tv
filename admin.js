@@ -4,6 +4,12 @@ const NOTE = "wtv-announce-v1";
 const GATE = "wtv-pub-ok";
 const PUB_KEY = "tbay2026";
 function gated() { return sessionStorage.getItem(GATE) === "1"; }
+function weekKeyNow() {
+  var d = new Date();
+  var x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  x.setDate(x.getDate() - x.getDay());
+  return x.getFullYear() + "-" + (x.getMonth() + 1) + "-" + x.getDate();
+}
 function askGate() {
   if (gated()) return true;
   var wrap = document.createElement("div");
@@ -91,7 +97,6 @@ function render() {
   }
 }
 if (!askGate()) {
-  /* stop */
 } else {
   var notice = document.getElementById("notice");
   if (notice) notice.addEventListener("submit", function (e) {
@@ -103,7 +108,8 @@ if (!askGate()) {
       kicker: f.kicker.value.trim() || "NOTICE",
       title: f.title.value.trim(),
       line: f.line.value.trim(),
-      url: f.url.value.trim()
+      url: f.url.value.trim(),
+      week: weekKeyNow()
     });
     saveNotes(ads);
     f.reset();
