@@ -1,13 +1,16 @@
 function filmSources() {
   var srcs = [];
   var data = window.SEED || {};
+  var extra = [];
+  try { extra = JSON.parse(localStorage.getItem("wtv-published-v1") || "[]"); } catch (e) {}
+  extra.concat(data.events || []).forEach(function (ev) {
+    if (window.eventThisWeek && !window.eventThisWeek(ev)) return;
+    if (ev.image) srcs.push(ev.image);
+  });
   if (data.gallery) srcs = srcs.concat(data.gallery);
   if (data.wall) {
     data.wall.forEach(function (w) { if (w.image) srcs.push(w.image); });
   }
-  (data.events || []).forEach(function (ev) {
-    if (ev.image) srcs.push(ev.image);
-  });
   if (!srcs.length) srcs = ["./media/hero.jpg", "./media/clip-169.jpg", "./media/still-01.jpg"];
   return srcs;
 }
