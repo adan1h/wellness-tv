@@ -1,8 +1,13 @@
+/*
+  When YouTube / Kick / X / TikTok accounts exist, paste the live or VOD
+  URLs here and set status to "live" | "next" | "replay".
+  The home reads this file. Admin is only a local override for tests.
+*/
 window.BROADCAST = {
-  eventId: "WTV-039",
-  status: "replay",
-  title: "Friday in the Bay",
-  note: "Simulation pack · generated stills until the first real shoot",
+  eventId: "",
+  status: "idle",
+  title: "",
+  note: "",
   replayUrl: "",
   windows: [
     { platform: "YouTube", aspect: "16:9", role: "replay + long live", url: "" },
