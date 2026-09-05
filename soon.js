@@ -1,7 +1,9 @@
 function allEvents() {
   var extra = [];
   try { extra = JSON.parse(localStorage.getItem("wtv-published-v1") || "[]"); } catch (e) {}
-  return extra.concat((window.SEED && window.SEED.events) || []);
+  return extra.concat((window.SEED && window.SEED.events) || []).filter(function (ev) {
+    return !window.eventThisWeek || window.eventThisWeek(ev);
+  });
 }
 function evDayName(ev) {
   var d = String(ev.day || "").toLowerCase();
